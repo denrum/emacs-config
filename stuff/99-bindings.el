@@ -71,7 +71,8 @@
   "p" '(:ignore t :which-key "project")
   "p f" '(projectile-find-file :which-key "find file in project")
   "p a" '(projectile-toggle-between-implementation-and-test :which-key "impl <-> test")
-  "p p" '(projectile-switch-project :which-key "switch project"))
+  "p p" '(projectile-switch-project :which-key "switch project")
+  "p o" 'treemacs)
 
 (leader-def
   "SPC" '(execute-extended-command :which-key "M-x"))
