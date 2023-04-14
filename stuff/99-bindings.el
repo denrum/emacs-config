@@ -55,13 +55,18 @@
   "m e d" 'cider-eval-defun-at-point
   "m c" 'cider-connect-clj
   "m e b" 'cider-eval-buffer
-  "m r n" 'cider-repl-set-ns)
+  "m r n" 'cider-repl-set-ns
+  "m r r" 'lsp-rename)
 
 (leader-def
   "b" '(:ignore t :which-key "buffer")
   "b b" '(ivy-switch-buffer :which-key "switch buffer")
   "b l" '(evil-switch-to-windows-last-buffer :which-key "last buffer")
   "b d" 'kill-this-buffer)
+
+(leader-def
+  "c" '(:ignore t :which-key "code")
+  "c l" 'comment-or-uncomment-region)
 
 (general-define-key
  "<escape>" 'keyboard-escape-quit)
@@ -71,8 +76,12 @@
   "p" '(:ignore t :which-key "project")
   "p f" '(projectile-find-file :which-key "find file in project")
   "p a" '(projectile-toggle-between-implementation-and-test :which-key "impl <-> test")
-  "p p" '(projectile-switch-project :which-key "switch project")
-  "p o" 'treemacs)
+  "p p" '(projectile-switch-project :which-key "switch project"))
+
+(leader-def
+  "o" '(:ignore t :which-key "open")
+  "o p" 'treemacs
+  "o t" 'terminal-frame)
 
 (leader-def
   "SPC" '(execute-extended-command :which-key "M-x"))
