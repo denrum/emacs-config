@@ -51,7 +51,7 @@
   :keymaps 'clojure-mode-map
   "m" '(:ignore t :which-key "clojure")
   "m e" '(:ignore t :which-key "eval")
-  "m e e" 'cider-eval-last-sexp
+  "m e e" 'cider-eval-end-of-sexp
   "m e d" 'cider-eval-defun-at-point
   "m c" 'cider-connect-clj
   "m e b" 'cider-eval-buffer

@@ -24,6 +24,8 @@
   :config
   (evil-mode 1))
 
+(setq evil-move-cursor-back nil)
+
 (use-package evil-escape
   :ensure t
   :config (evil-escape-mode))
