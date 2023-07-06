@@ -56,7 +56,8 @@
   "m c" 'cider-connect-clj
   "m e b" 'cider-eval-buffer
   "m r n" 'cider-repl-set-ns
-  "m r r" 'lsp-rename)
+  "m r r" 'lsp-rename
+  "m g g" 'evil-goto-definition)
 
 (leader-def
   "b" '(:ignore t :which-key "buffer")
