@@ -57,7 +57,8 @@
   "m e b" 'cider-eval-buffer
   "m r n" 'cider-repl-set-ns
   "m r r" 'lsp-rename
-  "m g g" 'evil-goto-definition)
+  "m g g" 'evil-goto-definition
+  "m r r" 'lsp-rename)
 
 (leader-def
   "b" '(:ignore t :which-key "buffer")

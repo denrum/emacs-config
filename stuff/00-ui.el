@@ -29,6 +29,8 @@
 (setq auto-save-default nil)
 (setq create-lockfiles nil)
 (setq truncate-lines t)
+(if (eq system-type 'darwin)
+    (setq pixel-scroll-precision-mode t))
 
 ;;; Setup
 
@@ -42,7 +44,7 @@
   :ensure t
   :config
   (load-theme 'sanityinc-tomorrow-day t)
-  (set-face-attribute 'default nil :family "Iosevka Nerd Font Mono" :height 120))
+  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 130))
 
 ;; (use-package tao-theme
 ;;   :ensure t
