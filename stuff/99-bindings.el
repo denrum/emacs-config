@@ -68,7 +68,9 @@
 
 (leader-def
   "c" '(:ignore t :which-key "code")
-  "c l" 'comment-or-uncomment-region)
+  "c l" 'comment-or-uncomment-region
+  "c f b" 'lsp-format-buffer
+  "c f r" 'lsp-format-region)
 
 (general-define-key
  "<escape>" 'keyboard-escape-quit)

@@ -15,5 +15,11 @@
 (use-package docker
   :ensure t)
 
+(use-package yaml-mode
+  :ensure t)
+
+(use-package docker-compose-mode
+  :ensure t)
+
 (provide '16-rust)
 ;;; 16-rust.el ends here
