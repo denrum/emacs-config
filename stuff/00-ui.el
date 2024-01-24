@@ -32,19 +32,81 @@
 (if (eq system-type 'darwin)
     (setq pixel-scroll-precision-mode t))
 
+;; (use-package gcmh
+;;   :ensure t
+;;   :demand
+;;   :hook
+;;   (focus-out-hook . gcmh-idle-garbage-collect)
+
+;;   :custom
+;;   (gcmh-idle-delay 10)
+;;   (gcmh-high-cons-threshold 104857600)
+
+;;   :config
+;;   (gcmh-mode +1))
+
 ;;; Setup
 
 (use-package all-the-icons
   :ensure t
   :if (display-graphic-p)
-  
-  )
+  :config (setq all-the-icons-scale-factor 2.0))
 
-(use-package color-theme-sanityinc-tomorrow
+
+;; (use-package rebecca-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'rebecca t)
+;;   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120))
+
+;; (use-package spacemacs-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'spacemacs-dark t)
+;;   ;;(setq-default line-spacing 2)
+;;   ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120))
+;;   ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 120))
+;;   (set-face-attribute 'default nil :family "Iosevka" :height 130))
+
+(use-package doom-themes
   :ensure t
   :config
-  (load-theme 'sanityinc-tomorrow-day t)
-  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 130))
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-flatwhite t)
+  (set-face-attribute 'default nil :family "Iosevka" :height 120))
+  ;;(set-face-attribute 'default nil :family "monospace" :height 120))
+
+;; (use-package vscode-dark-plus-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'vscode-dark-plus t))
+
+
+;; (use-package doom-themes
+;;   :ensure t
+;;   :config
+;;   ;; Global settings (defaults)
+;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;   (load-theme 'doom-one t)
+
+;;   ;; Enable flashing mode-line on errors
+;;   (doom-themes-visual-bell-config)
+;;   ;; Enable custom neotree theme (all-the-icons must be installed!)
+;;   (doom-themes-neotree-config)
+;;   ;; or for treemacs users
+;;   (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+;;   (doom-themes-treemacs-config)
+;;   ;; Corrects (and improves) org-mode's native fontification.
+;;   (doom-themes-org-config))
+
+;; (use-package color-theme-sanityinc-tomorrow
+;;   :ensure t
+;;   :config
+;;   (load-theme 'sanityinc-tomorrow-day t)
+;;   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120))
 
 ;; (use-package tao-theme
 ;;   :ensure t
@@ -54,6 +116,13 @@
 ;;   :config
 ;;   (load-theme 'tao-yang t)
 ;;   (set-face-attribute 'default nil :family "Iosevka Nerd Font Mono" :height 140))
+
+(use-package vertico-posframe
+  :ensure t)
+
+(use-package spacious-padding
+  :ensure t
+  :init (spacious-padding-mode 1))
 
 (provide '00-ui)
 ;;; 00-ui.el ends here

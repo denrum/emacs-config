@@ -60,7 +60,8 @@
   "m g g" 'evil-goto-definition
   "m r r" 'lsp-rename
   "m t r" 'cider-test-run-test
-  "m t n" 'cider-test-run-ns-tests)
+  "m t n" 'cider-test-run-ns-tests
+  "m d d" 'cider-doc)
 
 (leader-def
   "b" '(:ignore t :which-key "buffer")
@@ -81,6 +82,7 @@
   ;;"p" 'projectile-command-map
   "p" '(:ignore t :which-key "project")
   "p f" '(projectile-find-file :which-key "find file in project")
+  "p g" '(projectile-grep :which-key "grep in project")
   "p a" '(projectile-toggle-between-implementation-and-test :which-key "impl <-> test")
   "p p" '(projectile-switch-project :which-key "switch project"))
 

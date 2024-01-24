@@ -1,13 +1,14 @@
 ;;;; 16-dotnet --- rust for emacs
 ;;;; Commentary:
 ;;;; Set up rust for Emacs
-;;;; Code:
+;; Code:
 
 (use-package eglot
   :ensure t)
 
 (use-package rust-mode
-  :ensure t)
+  :ensure t
+  :config (setq rust-format-on-save t))
 
 (use-package dockerfile-mode
   :ensure t)
