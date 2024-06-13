@@ -1,3 +1,8 @@
+;; package -- Summary
+;; 08-cider.el
+;;; Commentary:
+;;; Code:
+
 (use-package cider
   :ensure t)
 
@@ -6,3 +11,6 @@
   (save-excursion
     (forward-char)
     (cider-eval-last-sexp arg)))
+
+(provide '08-cider)
+;;; 08-cider.el ends here

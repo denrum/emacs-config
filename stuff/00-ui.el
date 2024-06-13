@@ -52,6 +52,14 @@
   :if (display-graphic-p)
   :config (setq all-the-icons-scale-factor 2.0))
 
+;; (use-package vertico-posframe
+;;   :ensure t)
+
+;; (use-package spacious-padding
+;;   :ensure t
+;;   ;;:after doom-themes
+;;   :after catppuccin-theme
+;;   :init (spacious-padding-mode 1))
 
 ;; (use-package rebecca-theme
 ;;   :ensure t
@@ -65,8 +73,15 @@
 ;;   (load-theme 'spacemacs-dark t)
 ;;   ;;(setq-default line-spacing 2)
 ;;   ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120))
-;;   ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 120))
-;;   (set-face-attribute 'default nil :family "Iosevka" :height 130))
+;;   (set-face-attribute 'default nil :family "Berkeley Mono" :height 120))
+;;   ;; (set-face-attribute 'default nil :family "Iosevka" :height 130))
+
+;; (use-package catppuccin-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'catppuccin t)
+;;   (set catppuccin-flavor 'latte)
+;;   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120))
 
 (use-package doom-themes
   :ensure t
@@ -74,9 +89,21 @@
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-flatwhite t)
-  (set-face-attribute 'default nil :family "Iosevka" :height 120))
+  ;;(load-theme 'doom-flatwhite t)
+  ;;(load-theme 'doom-one t)
+  ;;(load-theme 'doom-nord t)
+  (load-theme 'doom-opera-light t)
+  ;;(load-theme 'doom-nord-light t)
+  ;;(set-face-attribute 'default nil :family "Iosevka" :height 130)
+  ;; (set-face-attribute 'default nil :family "Ubuntu Mono" :height 120)
+  ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 120)
+  ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
+  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120)
+  ;;(setq default-text-properties '(line-spacing 0.0 line-height 1.2))
+  ;;(set-face-attribute 'default nil :family "Monaspace Krypton" :height 120))
+  ;; (set-face-attribute 'default nil :family "SpaceMono Nerd Font" :height 120))
   ;;(set-face-attribute 'default nil :family "monospace" :height 120))
+)
 
 ;; (use-package vscode-dark-plus-theme
 ;;   :ensure t
@@ -117,47 +144,7 @@
 ;;   (load-theme 'tao-yang t)
 ;;   (set-face-attribute 'default nil :family "Iosevka Nerd Font Mono" :height 140))
 
-(use-package vertico-posframe
-  :ensure t)
-
-(use-package spacious-padding
-  :ensure t
-  :init (spacious-padding-mode 1))
 
 (provide '00-ui)
-;;; 00-ui.el ends here
 
-(defun xah-insert-random-uuid ()
-  "Insert a UUID.
-This commands calls “uuidgen” on MacOS, Linux, and calls PowelShell on Microsoft Windows.
-URL `http://xahlee.info/emacs/emacs/elisp_generate_uuid.html'
-Version 2020-06-04"
-  (interactive)
-  (cond
-   ((string-equal system-type "windows-nt")
-    (shell-command "pwsh.exe -Command [guid]::NewGuid().toString()" t))
-   ((string-equal system-type "darwin") ; Mac
-    (shell-command "uuidgen" t))
-   ((string-equal system-type "gnu/linux")
-    (insert (substring (shell-command-to-string "uuidgen") 0 36)))
-   (t
-    ;; code here by Christopher Wellons, 2011-11-18.
-    ;; and editted Hideki Saito further to generate all valid variants for "N" in xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx format.
-    (let ((myStr (md5 (format "%s%s%s%s%s%s%s%s%s%s"
-                              (user-uid)
-                              (emacs-pid)
-                              (system-name)
-                              (user-full-name)
-                              (current-time)
-                              (emacs-uptime)
-                              (garbage-collect)
-                              (buffer-string)
-                              (random)
-                              (recent-keys)))))
-      (insert (format "%s-%s-4%s-%s%s-%s"
-                      (substring myStr 0 8)
-                      (substring myStr 8 12)
-                      (substring myStr 13 16)
-                      (format "%x" (+ 8 (random 4)))
-                      (substring myStr 17 20)
-                      (substring myStr 20 32)))))))
+;;; 00-ui.el ends here

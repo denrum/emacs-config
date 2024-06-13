@@ -27,5 +27,13 @@
 (use-package counsel
   :ensure t)
 
+(use-package vertico
+  :ensure t
+  :config (vertico-mode))
+
+(use-package marginalia
+  :ensure t
+  :config (marginalia-mode))
+
 (provide '03-ivy)
 ;;; 03-ivy.el ends here

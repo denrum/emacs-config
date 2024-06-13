@@ -53,7 +53,7 @@
   "m e" '(:ignore t :which-key "eval")
   "m e e" 'cider-eval-end-of-sexp
   "m e d" 'cider-eval-defun-at-point
-  "m c" 'cider-connect-clj
+  "m c"   'cider-connect-clj
   "m e b" 'cider-eval-buffer
   "m r n" 'cider-repl-set-ns
   "m r r" 'lsp-rename
@@ -64,6 +64,24 @@
   "m d d" 'cider-doc)
 
 (leader-def
+  :keymaps 'lisp-mode-map
+  "m" '(:ignore t :which-key "common-lisp")
+  "m e" '(:ignore t :which-key "eval")
+  "m e e" 'slime-eval-last-expression
+  "m e d" 'slime-eval-defun
+  "m c"   'slime-connect
+  "m s"   'slime
+  "m e b" 'slime-eval-buffer
+  ;;"m r n" 'cider-repl-set-ns
+  "m r r" 'lsp-rename
+  "m g g" 'evil-goto-definition
+  "m r r" 'lsp-rename
+  ;;"m t r" 'cider-test-run-test
+  ;;"m t n" 'cider-test-run-ns-tests
+  "m d d" 'slime-documentation
+  "c c" 'slime-fuzzy-completion-in-place)
+
+(leader-def
   "b" '(:ignore t :which-key "buffer")
   "b b" '(ivy-switch-buffer :which-key "switch buffer")
   "b l" '(evil-switch-to-windows-last-buffer :which-key "last buffer")
@@ -71,6 +89,7 @@
 
 (leader-def
   "c" '(:ignore t :which-key "code")
+  "c a" 'lsp-execute-code-action
   "c l" 'comment-or-uncomment-region
   "c f b" 'lsp-format-buffer
   "c f r" 'lsp-format-region)

@@ -21,7 +21,6 @@
 ;;(treemacs-load-all-the-icons-with-workaround-font "Hermit")
 ;;(setq treemacs-indentation '(20 px))
 
-;;(treemacs-resize-icons 50)
 
 (use-package treemacs-icons-dired
   :hook (dired-mode . treemacs-icons-dired-enable-once)
@@ -32,6 +31,15 @@
 ;; (set-face-attribute 'treemacs-directory-face nil :height 100)
 ;; (set-face-attribute 'treemacs-directory-collapsed-face nil :height 100)
 ;; (set-face-attribute 'treemacs-file-face nil :family "Berkeley Mono")
+
+(set-face-attribute 'treemacs-file-face nil :height 100)
+(set-face-attribute 'treemacs-directory-face nil :height 100)
+(set-face-attribute 'treemacs-git-modified-face nil :height 100)
+(set-face-attribute 'treemacs-all-the-icons-root-face nil :height 150)
+(set-face-attribute 'treemacs-all-the-icons-file-face nil :height 100)
+;;(set-face-attribute 'treemacs-*-face)
+
+(treemacs-resize-icons 10)
 
 (provide '13-treemacs)
 ;;; 13-treemacs.el ends here

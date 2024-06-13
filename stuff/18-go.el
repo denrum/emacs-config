@@ -1,7 +1,7 @@
-;;;; 18-go --- go for emacs
-;;;; Commentary:
-;;;; Set up go for Emacs
-;; Code:
+;; 18-go --- go for emacs
+;;; Commentary:
+;;; Set up go for Emacs
+;;; Code:
 
 (use-package go-mode
   :ensure t)
