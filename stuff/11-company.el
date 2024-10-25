@@ -4,13 +4,13 @@
 ;;; Code:
 (use-package company
   :ensure t
-  :hook ((emacs-lisp-mode clojure-mode lisp-mode) . company-mode)
+  :hook ((emacs-lisp-mode clojure-mode lisp-mode csharp-mode) . company-mode)
   )
 
 (setq company-show-quick-access t
       company-tooltip-align-annotations t
-      company-idle-delay 0.2
-      company-minimum-prefix-length 2
+      company-idle-delay 0
+      company-minimum-prefix-length 1
       company-tooltip-limit 20)
 
 (eval-after-load 'company

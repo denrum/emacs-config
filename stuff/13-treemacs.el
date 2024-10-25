@@ -14,9 +14,9 @@
   :after (treemacs projectile)
   :ensure t)
 
-(use-package treemacs-all-the-icons
-  :after (treemacs)
-  :ensure t)
+;; (use-package treemacs-all-the-icons
+;;   :after (treemacs)
+;;   :ensure t)
 
 ;;(treemacs-load-all-the-icons-with-workaround-font "Hermit")
 ;;(setq treemacs-indentation '(20 px))
@@ -35,11 +35,13 @@
 (set-face-attribute 'treemacs-file-face nil :height 100)
 (set-face-attribute 'treemacs-directory-face nil :height 100)
 (set-face-attribute 'treemacs-git-modified-face nil :height 100)
-(set-face-attribute 'treemacs-all-the-icons-root-face nil :height 150)
-(set-face-attribute 'treemacs-all-the-icons-file-face nil :height 100)
-;;(set-face-attribute 'treemacs-*-face)
+;;(set-face-attribute 'treemacs-all-the-icons-root-face nil :height 150)
+;;(set-face-attribute 'treemacs-all-the-icons-file-face nil :height 100)
+;;(set-face-attribute 'treemacs-all-the-icons-file-face nil :height 50)
 
-(treemacs-resize-icons 10)
+;;(treemacs-load-all-the-icons-with-workaround-font "JetBrainsMono Nerd Font Mono")
+
+(treemacs-resize-icons 20)
 
 (provide '13-treemacs)
 ;;; 13-treemacs.el ends here

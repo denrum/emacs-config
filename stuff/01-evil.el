@@ -26,6 +26,9 @@
 
 (setq evil-move-cursor-back nil)
 
+;;(evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
+(add-to-list 'evil-emacs-state-modes 'nav-mode)
+
 (use-package evil-escape
   :ensure t
   :config (evil-escape-mode))

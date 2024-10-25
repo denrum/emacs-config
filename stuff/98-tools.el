@@ -37,4 +37,18 @@ Version 2020-06-04"
                       (substring myStr 17 20)
                       (substring myStr 20 32)))))))
 
+(defun to-underscore ()
+  "To snake case."
+  (interactive)
+  (progn (replace-regexp "\\([A-Z]\\)" "_\\1" nil (region-beginning) (region-end))
+		 (downcase-region (region-beginning) (region-end))))
+
+(defun word-to-underscore ()
+  "Word to snake case."
+  (interactive)
+  (save-excursion
+	(let ((bounds (bounds-of-thing-at-point 'word)))
+	  (replace-regexp "\\([A-Z]\\)" "_\\1" nil (1+ (car bounds)) (cdr bounds))
+		 (downcase-region (car bounds) (cdr bounds)))))
+
 ;;; 98-tools.el ends here

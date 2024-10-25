@@ -6,6 +6,9 @@
 (use-package slime
   :ensure t)
 
+(use-package slime-company
+  :ensure t)
+
 (require 'slime-autoloads)
 
 (setq slime-autoloads '(".slime-autoloads.lisp"))

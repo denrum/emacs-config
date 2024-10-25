@@ -82,17 +82,29 @@
   "c c" 'slime-fuzzy-completion-in-place)
 
 (leader-def
+  :keymaps 'csharp-mode
+  "m g g" 'evil-goto-definition)
+
+(leader-def
+  "g d" 'xref-find-definitions
+  "g b" 'xref-go-back
+  "g f" 'xref-go-forward
+  "g i" 'eglot-find-implementation)
+
+(leader-def
   "b" '(:ignore t :which-key "buffer")
   "b b" '(ivy-switch-buffer :which-key "switch buffer")
   "b l" '(evil-switch-to-windows-last-buffer :which-key "last buffer")
-  "b d" 'kill-this-buffer)
+  "b d" 'kill-current-buffer)
 
 (leader-def
   "c" '(:ignore t :which-key "code")
-  "c a" 'lsp-execute-code-action
+  "c a" 'eglot-code-actions
   "c l" 'comment-or-uncomment-region
-  "c f b" 'lsp-format-buffer
-  "c f r" 'lsp-format-region)
+  "c f b" 'eglot-format-buffer
+  "c f r" 'eglot-format
+  "c w s" 'word-to-underscore
+  "c r" 'eglot-rename)
 
 (general-define-key
  "<escape>" 'keyboard-escape-quit)

@@ -32,6 +32,8 @@
 (if (eq system-type 'darwin)
     (setq pixel-scroll-precision-mode t))
 
+(setq gc-cons-threshold 100000000)
+
 ;; (use-package gcmh
 ;;   :ensure t
 ;;   :demand
@@ -97,8 +99,8 @@
   ;;(set-face-attribute 'default nil :family "Iosevka" :height 130)
   ;; (set-face-attribute 'default nil :family "Ubuntu Mono" :height 120)
   ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 120)
-  ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
-  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120)
+  ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110) 
+  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
   ;;(setq default-text-properties '(line-spacing 0.0 line-height 1.2))
   ;;(set-face-attribute 'default nil :family "Monaspace Krypton" :height 120))
   ;; (set-face-attribute 'default nil :family "SpaceMono Nerd Font" :height 120))
