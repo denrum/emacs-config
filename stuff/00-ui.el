@@ -22,17 +22,18 @@
 ;;; Invaluable UI stuff
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(menu-bar-mode -1)
+;; (menu-bar-mode -1)
 (setq inhibit-startup-screen t)
 (setq scroll-step 1)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq create-lockfiles nil)
 (setq truncate-lines t)
-(if (eq system-type 'darwin)
-    (setq pixel-scroll-precision-mode t))
+(setq pixel-scroll-mode t)
 
 (setq gc-cons-threshold 100000000)
+
+(setq compilation-scroll-output t)
 
 ;; (use-package gcmh
 ;;   :ensure t
@@ -57,34 +58,6 @@
 ;; (use-package vertico-posframe
 ;;   :ensure t)
 
-;; (use-package spacious-padding
-;;   :ensure t
-;;   ;;:after doom-themes
-;;   :after catppuccin-theme
-;;   :init (spacious-padding-mode 1))
-
-;; (use-package rebecca-theme
-;;   :ensure t
-;;   :config
-;;   (load-theme 'rebecca t)
-;;   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120))
-
-;; (use-package spacemacs-theme
-;;   :ensure t
-;;   :config
-;;   (load-theme 'spacemacs-dark t)
-;;   ;;(setq-default line-spacing 2)
-;;   ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120))
-;;   (set-face-attribute 'default nil :family "Berkeley Mono" :height 120))
-;;   ;; (set-face-attribute 'default nil :family "Iosevka" :height 130))
-
-;; (use-package catppuccin-theme
-;;   :ensure t
-;;   :config
-;;   (load-theme 'catppuccin t)
-;;   (set catppuccin-flavor 'latte)
-;;   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120))
-
 (use-package doom-themes
   :ensure t
   :config
@@ -92,14 +65,15 @@
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
   ;;(load-theme 'doom-flatwhite t)
+  (load-theme 'doom-one-light)
   ;;(load-theme 'doom-one t)
   ;;(load-theme 'doom-nord t)
-  (load-theme 'doom-opera-light t)
+  ;;(load-theme 'doom-opera-light t)
   ;;(load-theme 'doom-nord-light t)
   ;;(set-face-attribute 'default nil :family "Iosevka" :height 130)
   ;; (set-face-attribute 'default nil :family "Ubuntu Mono" :height 120)
-  ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 120)
-  ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110) 
+  ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 130)
+  ;; (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
   ;;(setq default-text-properties '(line-spacing 0.0 line-height 1.2))
   ;;(set-face-attribute 'default nil :family "Monaspace Krypton" :height 120))
@@ -107,45 +81,24 @@
   ;;(set-face-attribute 'default nil :family "monospace" :height 120))
 )
 
-;; (use-package vscode-dark-plus-theme
-;;   :ensure t
-;;   :config
-;;   (load-theme 'vscode-dark-plus t))
+(use-package spacious-padding
+  :ensure t
+  :after (doom-themes)
+  :init (spacious-padding-mode 1))
 
+(add-hook 'dired-after-readin-hook 'hl-line-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook '(lambda () (setq truncate-lines t word-wrap nil)))
+(add-hook 'treemacs-mode-hook '(lambda () (setq truncate-lines t word-wrap nil)))
 
-;; (use-package doom-themes
-;;   :ensure t
-;;   :config
-;;   ;; Global settings (defaults)
-;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-;;   (load-theme 'doom-one t)
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
 
-;;   ;; Enable flashing mode-line on errors
-;;   (doom-themes-visual-bell-config)
-;;   ;; Enable custom neotree theme (all-the-icons must be installed!)
-;;   (doom-themes-neotree-config)
-;;   ;; or for treemacs users
-;;   (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-;;   (doom-themes-treemacs-config)
-;;   ;; Corrects (and improves) org-mode's native fontification.
-;;   (doom-themes-org-config))
-
-;; (use-package color-theme-sanityinc-tomorrow
-;;   :ensure t
-;;   :config
-;;   (load-theme 'sanityinc-tomorrow-day t)
-;;   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120))
-
-;; (use-package tao-theme
-;;   :ensure t
-;;   :init
-;;   (setq tao-theme-use-sepia nil)
-;;   (setq tao-theme-use-boxes nil)
-;;   :config
-;;   (load-theme 'tao-yang t)
-;;   (set-face-attribute 'default nil :family "Iosevka Nerd Font Mono" :height 140))
-
+(use-package indent-bars
+  :ensure t
+  :hook ((csharp-mode) . indent-bars-mode)
+  :custom (indent-bars-width-frac 0.1))
 
 (provide '00-ui)
 

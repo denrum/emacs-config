@@ -19,19 +19,19 @@
 ;;
 ;;; Code:
 
-(use-package evil
-  :ensure t
-  :config
-  (evil-mode 1))
+;; (use-package evil
+;;   :ensure t
+;;   :config
+;;   (evil-mode 1))
 
-(setq evil-move-cursor-back nil)
+;; (setq evil-move-cursor-back nil)
 
 ;;(evil-set-initial-state 'xref--xref-buffer-mode 'emacs)
-(add-to-list 'evil-emacs-state-modes 'nav-mode)
+;; (add-to-list 'evil-emacs-state-modes 'nav-mode)
 
-(use-package evil-escape
-  :ensure t
-  :config (evil-escape-mode))
+;; (use-package evil-escape
+;;   :ensure t
+;;   :config (evil-escape-mode))
 
 (provide '01-evil)
 ;;; 01-evil.el ends here

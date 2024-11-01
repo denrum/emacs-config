@@ -13,7 +13,8 @@
   :ensure t
   :hook ((clojure-mode . eglot-ensure)
 		 (csharp-mode . eglot-ensure)
-		 (go-mode . eglot-ensure))
+		 (go-mode . eglot-ensure)
+		 (rust-mode . eglot-ensure))
   :config (add-to-list 'eglot-server-programs
 		      ;;'(csharp-mode . ("~/.local/bin/emacs-lsp-booster" "~/Public/omnisharp/OmniSharp" "-lsp"))))
 		      '(csharp-mode . ("/home/denis/Public/omnisharp/OmniSharp" "-lsp"))))

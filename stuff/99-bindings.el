@@ -1,12 +1,13 @@
 (general-create-definer leader-def
   :states 'motion
   :keymaps 'override
-  :prefix "SPC")
+  :prefix "SPC"
+  :global-prefix "M-SPC")
 
 (leader-def
   "f" '(:ignore t :which-key "file")
   "f f" '(counsel-find-file :which-key "find file")
-  "f s" '(save-buffer :which-key "save file")) 
+  "f s" '(save-buffer :which-key "save file"))
 
 (leader-def
   "/" 'counsel-rg)
@@ -22,7 +23,7 @@
   "k >" '(sp-forward-barf-sexp :which-key "(->")
   "k d" '(sp-kill-sexp :which-key "delete sexp")
   "k r" '(sp-raise-sexp :which-key "raise sexp")
-  "k y" '(sp-copy-sexp :which-key "copy sexp")) 
+  "k y" '(sp-copy-sexp :which-key "copy sexp"))
 
 (leader-def
   "w" '(:ignore t :which-key "window")
@@ -37,7 +38,7 @@
 (general-define-key
  :keymaps 'ivy-mode-map
  "C-j" 'ivy-next-line
- "C-k" 'ivy-previous-line) 
+ "C-k" 'ivy-previous-line)
 
 (leader-def
   :keymaps 'emacs-lisp-mode-map

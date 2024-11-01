@@ -49,6 +49,6 @@ Version 2020-06-04"
   (save-excursion
 	(let ((bounds (bounds-of-thing-at-point 'word)))
 	  (replace-regexp "\\([A-Z]\\)" "_\\1" nil (1+ (car bounds)) (cdr bounds))
-		 (downcase-region (car bounds) (cdr bounds)))))
+	  (downcase-region (car bounds) (cdr bounds)))))
 
 ;;; 98-tools.el ends here
