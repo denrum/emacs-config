@@ -16,8 +16,7 @@
 		 (go-mode . eglot-ensure)
 		 (rust-mode . eglot-ensure))
   :config (add-to-list 'eglot-server-programs
-		      ;;'(csharp-mode . ("~/.local/bin/emacs-lsp-booster" "~/Public/omnisharp/OmniSharp" "-lsp"))))
-		      '(csharp-mode . ("/home/denis/Public/omnisharp/OmniSharp" "-lsp"))))
+					   '(csharp-mode . ("/home/denis/Public/omnisharp/OmniSharp" "-lsp"))))
 		      ;;'(csharp-mode . ("csharp-ls"))))
 
 (use-package eglot-booster
@@ -28,6 +27,7 @@
 
 (setq eglot-connect-timeout 300)
 (setq eglot-events-buffer-config 0)
+(setq eglot-events-buffer-size)
 
 (provide '12-lsp)
 ;;; 12-lsp.el ends here

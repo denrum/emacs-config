@@ -4,6 +4,14 @@
   :prefix "SPC"
   :global-prefix "M-SPC")
 
+(general-create-definer prog-def
+  :prefix "C-c")
+
+(prog-def
+  "r" '(eglot-rename :which-key "reaname")
+  "o" '(eglot-code-action-organize-imports :which-key "organize imports")
+  "h" '(eldoc :which-key "doc"))
+
 (leader-def
   "f" '(:ignore t :which-key "file")
   "f f" '(counsel-find-file :which-key "find file")

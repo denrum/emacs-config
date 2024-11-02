@@ -22,6 +22,9 @@
 (require 'nerd-icons)
 (require 'treemacs)
 
+(setq treemacs-follow-after-init t)
+(setq treemacs-follow-mode -1)
+
 (defface treemacs-nerd-icons-root-face
   '((t (:inherit nerd-icons-dorange)))
   "Face used for the root icon in nerd-icons theme."

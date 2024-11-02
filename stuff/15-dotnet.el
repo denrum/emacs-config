@@ -4,27 +4,6 @@
 ;;; Code:
 
 
-;; (use-package lsp-mode
-;;   :ensure t)
-  ;; :config (add-to-list 'lsp-list
-  ;; 		      '(csharp-mode . ("~/.local/bin/emacs-lsp-booster" "~/Public/omnisharp/OmniSharp" "-lsp"))))
-  ;; 		      ;;'(csharp-mode . ("csharp-ls"))))
-
-;; (use-package csharp-mode
-;;   :ensure t)
-
-;; (add-hook 'csharp-mode-hook 'lsp-deferred)
-
-;; (use-package tree-sitter
-;;   :ensure t)
-;;   ;;:config (add-to-list 'tree-sitter-major-mode-language-alist '(csharp-mode . c_sharp)))
-
-;; (use-package tree-sitter-langs
-;;   :ensure t)
-
-;; (use-package tree-sitter-indent
-;;   :ensure t)
-
 ;; (use-package csproj-mode
 ;;   :ensure t
 ;;   :config
@@ -40,6 +19,16 @@
 ;; (add-hook 'dap-stopped-hook
 ;;           (lambda (arg) (call-interactively #'dap-hydra)))
 
+(add-to-list 'auto-mode-alist '("\\.csproj" . nxml-mode))
+
+(use-package sharper
+  :ensure t
+  :vc (:url "https://github.com/sebasmonia/sharper" :rev :newest)
+  :bind
+  ("C-c n" . sharper-main-transient))
+
+(require 'sharper)
+
 (require 'xml)
 
 (defun read-xml-file (file)
@@ -48,22 +37,26 @@
     (insert-file-contents file)
     (libxml-parse-xml-region (point-min) (point-max))))
 
+(require 'dom)
+
 (defun find-tag-value (xml tag)
   "Find the value of the first occurrence of TAG in the XML/HTML tree XML."
-  (catch 'found
-    (when (listp xml)
-      (let ((tag-name (car xml)))
-        (if (eq tag-name tag)
-            (let ((children (cddr xml)))
-              (dolist (child children)
-                (when (stringp child)
-                  (throw 'found child))))
-          (dolist (child (cdr xml))
-            (when (listp child)
-              (let ((result (find-tag-value child tag)))
-                (when result
-                  (throw 'found result))))))))))
+  (car (cddr (car (dom-by-tag xml tag)))))
 
+(defun find-current-file-project-dll ()
+  "Find dll name of current file project."
+  (let* ((csproj (file-relative-name (car (file-expand-wildcards (file-name-concat (sharper--nearest-project-dir) "*.csproj")))))
+		 (dir (file-name-directory csproj))
+		 (xml-data (read-xml-file csproj))
+		 (assembly-name (find-tag-value xml-data 'AssemblyName))
+		 (assembly-file-name (if assembly-name
+								 (concat assembly-name ".dll")
+							   (concat (file-name-base csproj) ".dll"))))
+	(file-relative-name
+	 (file-relative-name
+	  (car
+	   (file-expand-wildcards
+		(file-name-concat dir "bin" "Debug" "*" assembly-file-name)))))))
 
 (use-package dape
   :ensure t
@@ -112,74 +105,19 @@
      command-args ["--interpreter=vscode"]
      :request "launch"
      :cwd sharper--nearest-project-dir
-     :program (lambda ()
-				(let* ((csproj (file-relative-name (car (file-expand-wildcards "*.csproj"))))
-					  (xml-data (read-xml-file csproj))
-					  (assembly-name (find-tag-value xml-data 'AssemblyName))
-					  (assembly-file-name (concat assembly-name ".dll")))
-				  (file-relative-name
-				   (file-relative-name
-					(car
-					 (file-expand-wildcards
-					  (file-name-concat "bin" "Debug" "*" assembly-file-name)))))))
-	 :stopAtEntry nil))
-  )
+     :program find-current-file-project-dll
+	 :stopAtEntry nil)))
 
 ;; Enable repeat mode for more ergonomic `dape' use
 (use-package repeat
   :config
   (repeat-mode))
 
-;; (use-package web-mode
-;;   :ensure t)
-
-(use-package sharper
-  :ensure t
-  :vc (:url "https://github.com/sebasmonia/sharper" :rev :newest)
-  :bind
-  ("C-c n" . sharper-main-transient))
-
-
-;; (use-package sharper
-;;   :ensure t)
-
 (use-package dockerfile-mode
   :ensure t)
 
 (use-package docker
   :ensure t)
-
-
-
-;; ;; project-find-function supporting both C# and F#:
-
-;; (defun dotnet-mode/find-sln-or-fsproj (dir-or-file)
-;;   "Search for a solution or F# project file in any enclosing
-;; folders relative to DIR-OR-FILE."
-;;   (dotnet-mode-search-upwards (rx (0+ nonl) (or ".fsproj" ".sln" ".csproj") eol)
-;;                               (file-name-directory dir-or-file)))
-
-;; (defun dotnet-mode-search-upwards (regex dir)
-;;   (when dir
-;;     (or (car-safe (directory-files dir 'full regex))
-;;         (dotnet-mode-search-upwards regex (dotnet-mode-parent-dir dir)))))
-
-;; (defun dotnet-mode-parent-dir (dir)
-;;   (let ((p (file-name-directory (directory-file-name dir))))
-;;     (unless (equal p dir)
-;;       p)))
-
-;; ;; Make project.el aware of dotnet projects
-;; (defun dotnet-mode-project-root (dir)
-;;   (when-let (project-file (dotnet-mode/find-sln-or-fsproj dir))
-;;     (cons 'dotnet (file-name-directory project-file))))
-
-;; (cl-defmethod project-roots ((project (head dotnet)))
-;;   (list (cdr project)))
-
-;; (add-hook 'project-find-functions #'dotnet-mode-project-root)
-
-
 
 (provide '15-dotnet)
 ;;; 15-dotnet.el ends here

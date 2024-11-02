@@ -9,8 +9,8 @@
 
 (setq company-show-quick-access t
       company-tooltip-align-annotations t
-      company-idle-delay 0
-      company-minimum-prefix-length 1
+      company-idle-delay 0.2
+      company-minimum-prefix-length 2
       company-tooltip-limit 20)
 
 (eval-after-load 'company
