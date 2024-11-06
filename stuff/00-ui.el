@@ -30,6 +30,7 @@
 (setq create-lockfiles nil)
 (setq truncate-lines t)
 (setq pixel-scroll-mode t)
+(pixel-scroll-precision-mode t)
 
 (setq gc-cons-threshold 100000000)
 
@@ -67,9 +68,9 @@
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
   ;;(load-theme 'doom-flatwhite t)
-  (load-theme 'doom-one-light)
+  ;;(load-theme 'doom-one-light)
   ;;(load-theme 'doom-one t)
-  ;;(load-theme 'doom-nord t)
+  (load-theme 'doom-nord t)
   ;;(load-theme 'doom-opera-light t)
   ;;(load-theme 'doom-nord-light t)
   ;;(set-face-attribute 'default nil :family "Iosevka" :height 130)

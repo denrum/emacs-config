@@ -8,6 +8,7 @@
   :prefix "C-c")
 
 (prog-def
+  "a" '(eglot-code-actions :which-key "code actions")
   "r" '(eglot-rename :which-key "reaname")
   "o" '(eglot-code-action-organize-imports :which-key "organize imports")
   "h" '(eldoc :which-key "doc"))
