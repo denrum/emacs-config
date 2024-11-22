@@ -20,15 +20,19 @@
 ;;; Code:
 
 ;;; Invaluable UI stuff
-(scroll-bar-mode -1)
+(scroll-bar-mode 0)
+
+;;(set-window-scroll-bars (minibuffer-window) nil nil)
+
 (tool-bar-mode -1)
-;; (menu-bar-mode -1)
+(menu-bar-mode 0)
 (setq inhibit-startup-screen t)
 (setq scroll-step 1)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq create-lockfiles nil)
 (setq truncate-lines t)
+(setq truncate-partial-width-windows nil)
 (setq pixel-scroll-mode t)
 (pixel-scroll-precision-mode t)
 
@@ -61,42 +65,64 @@
 ;; (use-package vertico-posframe
 ;;   :ensure t)
 
-(use-package doom-themes
+(use-package modus-themes
   :ensure t
   :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  ;;(load-theme 'doom-flatwhite t)
-  ;;(load-theme 'doom-one-light)
-  ;;(load-theme 'doom-one t)
-  (load-theme 'doom-nord t)
-  ;;(load-theme 'doom-opera-light t)
-  ;;(load-theme 'doom-nord-light t)
-  ;;(set-face-attribute 'default nil :family "Iosevka" :height 130)
-  ;; (set-face-attribute 'default nil :family "Ubuntu Mono" :height 120)
-  ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 130)
-  ;; (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
-  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
-  ;;(setq default-text-properties '(line-spacing 0.0 line-height 1.2))
-  ;;(set-face-attribute 'default nil :family "Monaspace Krypton" :height 120))
-  ;; (set-face-attribute 'default nil :family "SpaceMono Nerd Font" :height 120))
-  ;;(set-face-attribute 'default nil :family "monospace" :height 120))
-)
+  (load-theme 'modus-operandi t)
+  ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
+  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110 :weight 'light))
+
+
+;; (use-package tao-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'tao-yang t)
+;;   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110))
+
+;; (use-package doom-themes
+;;   :ensure t
+;;   :config
+;;   ;; Global settings (defaults)
+;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;   ;;(load-theme 'doom-flatwhite t)
+;;   ;;(load-theme 'doom-one-light)
+;;   ;;(load-theme 'doom-one t)
+;;   ;;(load-theme 'doom-nord t)
+;;   (load-theme 'doom-tomorrow-day t)
+;;   ;;(load-theme 'doom-opera-light t)
+;;   ;;(load-theme 'doom-nord-light t)
+;;   ;;(set-face-attribute 'default nil :family "Iosevka" :height 130)
+;;   ;; (set-face-attribute 'default nil :family "Ubuntu Mono" :height 120)
+;;   ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 130)
+;;   ;; (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
+;;   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
+;;   ;;(setq default-text-properties '(line-spacing 0.0 line-height 1.2))
+;;   ;;(set-face-attribute 'default nil :family "Monaspace Krypton" :height 120))
+;;   ;; (set-face-attribute 'default nil :family "SpaceMono Nerd Font" :height 120))
+;;   ;;(set-face-attribute 'default nil :family "monospace" :height 120))
+;; )
 
 (use-package spacious-padding
   :ensure t
-  :after (doom-themes)
+  :after (modus-themes)
   :init (spacious-padding-mode 1))
 
 (add-hook 'dired-after-readin-hook 'hl-line-mode)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'prog-mode-hook '(lambda () (setq truncate-lines t word-wrap nil)))
-(add-hook 'treemacs-mode-hook '(lambda () (setq truncate-lines t word-wrap nil)))
+(add-hook 'prog-mode-hook #'(lambda () (setq truncate-lines t word-wrap nil)))
+(add-hook 'treemacs-mode-hook #'(lambda () (setq truncate-lines t word-wrap nil)))
 
 (use-package doom-modeline
   :ensure t
-  :init (doom-modeline-mode 1))
+  :init (doom-modeline-mode 1)
+  :config
+  (setq doom-modeline-total-line-number t))
+
+;; Nyan cat for scroll position
+(use-package nyan-mode
+  :ensure t
+  :init (nyan-mode 1))
 
 (use-package indent-bars
   :ensure t

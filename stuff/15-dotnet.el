@@ -58,6 +58,27 @@
 	   (file-expand-wildcards
 		(file-name-concat dir "bin" "Debug" "*" assembly-file-name)))))))
 
+(require 'cl-lib)
+
+(defvar nunit-test-methodfunc-template "dotnet test --filter %e --logger \"trx;LogFileName=%f\"" "Template for \"dotnet test\" invocations to run the \"current test\".")
+
+(defun nunit-run-test-at-point (&optional _transient-params)
+  "Run \"dotnet test\", ignore TRANSIENT-PARAMS, setup call via `sharper--current-test'."
+  (interactive
+   (list (transient-args 'sharper-transient-test)))
+  ;;(transient-set)
+  (if sharper--current-test
+      (let* ((temp-file (make-temp-file "dotnet"))
+			 (default-directory (car sharper--current-test))
+             (command (sharper--strformat nunit-test-methodfunc-template
+                                          ?e (shell-quote-argument (cdr sharper--current-test))
+										  ?f temp-file)))
+        (sharper--log-command "Testing method/function at point" command)
+        (compile command))
+    ;; go back to the main menu if sharper--current-test is not set
+    (sharper-main-transient)))
+
+
 (use-package dape
   :ensure t
   ;;:preface
