@@ -110,8 +110,7 @@
 
 (add-hook 'dired-after-readin-hook 'hl-line-mode)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'prog-mode-hook #'(lambda () (setq truncate-lines t word-wrap nil)))
-(add-hook 'treemacs-mode-hook #'(lambda () (setq truncate-lines t word-wrap nil)))
+(setq display-line-numbers-width 4)
 
 (use-package doom-modeline
   :ensure t
