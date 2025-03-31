@@ -137,3 +137,6 @@
 
 (setq which-key-idle-delay 0.5)
 (setq which-key-idle-secondary-delay 0)
+
+(provide '99-bindings)
+;;; 99-bindings.el ends here

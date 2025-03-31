@@ -4,7 +4,7 @@
 ;;; Code:
 (use-package company
   :ensure t
-  :hook ((emacs-lisp-mode clojure-mode lisp-mode csharp-mode) . company-mode)
+  :hook ((emacs-lisp-mode clojure-mode lisp-mode csharp-mode go-mode) . company-mode)
   )
 
 (setq company-show-quick-access t

@@ -21,6 +21,8 @@
   
   (add-to-list 'eglot-server-programs
 			   ;;'(csharp-mode . ("/home/denis/Public/omnisharp/OmniSharp" "-lsp")))
+			   ;;'(csharp-mode . ("csharp-ls")))
+			   ;;'(csharp-mode . ("/home/denis/.vscode/extensions/ms-dotnettools.csharp-2.59.14-linux-x64/.roslyn/Microsoft.CodeAnalysis.LanguageServer" "--logLevel=Information" "--extensionLogDirectory=/tmp/")))
 			   '(csharp-mode . ("/home/denis/Projects/dotnet/omnisharp-roslyn/bin/Debug/OmniSharp.Stdio.Driver/net6.0/publish/OmniSharp" "-lsp")))
   
   ;; 			   '(csharp-mode . ("fsautocomplete" "-l" "/var/log/fsautocomplete.log"
@@ -76,13 +78,13 @@
 
 ;;'(csharp-mode . ("csharp-ls"))))
 
-(use-package eglot-booster
-  :ensure t
-  :after eglot
-  :vc (:url "https://github.com/jdtsmith/eglot-booster/" :rev :newest)
-  :config
-  (setq eglot-booster-io-only t)
-  (eglot-booster-mode))
+;; (use-package eglot-booster
+;;   :ensure t
+;;   :after eglot
+;;   :vc (:url "https://github.com/jdtsmith/eglot-booster/" :rev :newest)
+;;   :config
+;;   (setq eglot-booster-io-only t)
+;;   (eglot-booster-mode))
 
 (setq eglot-connect-timeout 300)
 ;;(setq eglot-events-buffer-config (list :size 0 :format 'full))
