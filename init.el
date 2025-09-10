@@ -21,33 +21,3 @@
 
 (provide 'init)
 ;;; init.el ends here
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("acfe7ff6aacb9432f124cde4e35d6d2b4bc52916411de73a6ccded9750c9fa97"
-	 "b8bd60a23b9e2f08b0c437231ee84f2dacc70fdc4d5a0fb87229bb9926273fdd"
-	 "88f7ee5594021c60a4a6a1c275614103de8c1435d6d08cc58882f920e0cec65e"
-	 default))
- '(package-selected-packages
-   '(all-the-icons-nerd-fonts catppuccin-theme cider counsel dape dirvish
-							  docker docker-compose-mode
-							  dockerfile-mode doom-modeline
-							  doom-themes eglot-booster evil-escape
-							  flycheck frameshot general gnuplot
-							  go-mode go-tag gotest
-							  highlight-indentation indent-bars
-							  js-ts-mode lsp-ui magit marginalia
-							  mindre-theme modus-themes
-							  monokai-pro-theme monokai-theme
-							  nyan-mode ob-restclient ollama-buddy
-							  pgmacs protobuf-mode rust-mode sharper
-							  slime-company smartparens
-							  spacious-padding tao-theme templ-ts-mode
-							  treemacs-all-the-icons treemacs-evil
-							  treemacs-icons-dired treemacs-nerd-icons
-							  treemacs-projectile ultra-scroll vertico
-							  web-mode which-key)))

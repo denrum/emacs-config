@@ -8,8 +8,10 @@
   :hook ((clojure-mode . eglot-ensure)
 		 (csharp-mode . eglot-ensure)
 		 (go-mode . eglot-ensure)
+		 (go-ts-mode . eglot-ensure)
 		 (rust-mode . eglot-ensure)
-		 (sql-mode . eglot-ensure))
+		 (sql-mode . eglot-ensure)
+		 (python-mode . eglot-ensure))
   :config
   (setq eglot-sync-connect 1)
 

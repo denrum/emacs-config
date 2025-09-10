@@ -5,6 +5,7 @@
 
 (use-package projectile
   :ensure t
+  :bind (("C-c C-t" . treemacs))
   :config
   (projectile-mode +1)
   (setq projectile-use-git-grep t))

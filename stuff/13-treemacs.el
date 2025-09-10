@@ -1,4 +1,4 @@
-;;; 13-lsp --- treemacs for emacs
+;;; 13-treemacs --- treemacs for emacs
 ;;; Commentary:
 ;; Set up treemacs for Emacs
 ;;; Code:
@@ -13,6 +13,13 @@
 (use-package treemacs-projectile
   :after (treemacs projectile)
   :ensure t)
+
+(defun my/treemacs-projectile-auto-open ()
+  "Открыть treemacs при переключении проекта в projectile."
+  (when (fboundp 'treemacs)
+    (treemacs)))
+
+(add-hook 'projectile-after-switch-project-hook #'my/treemacs-projectile-auto-open)
 
 (use-package nerd-icons
   :ensure t)

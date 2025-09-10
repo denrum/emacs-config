@@ -116,7 +116,7 @@
      ))))
 
 
-(bind-key "C-c t d" 'my/dape-debug-go-test go-mode-map)
+(bind-key "C-c t d" 'my/dape-debug-go-test go-ts-mode-map)
 
 ;; Enable repeat mode for more ergonomic `dape' use
 (use-package repeat

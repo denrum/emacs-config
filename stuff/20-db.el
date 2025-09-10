@@ -8,7 +8,7 @@
  'org-babel-load-languages
  '((sql . t)))
 
-(setq sql-postgres-program "/usr/lib/postgresql/16/bin/psql")
+(setq sql-postgres-program "/usr/bin/psql")
 
 
 ;; (use-package pg

@@ -8,7 +8,7 @@
   :ensure t
   :config
   (which-key-mode)
-  (which-key-setup-minibuffer))
+  (which-key-setup-side-window-bottom))
 
 (provide '05-which-key)
 

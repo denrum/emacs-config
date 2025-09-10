@@ -19,6 +19,9 @@
 ;;
 ;;; Code:
 
+;; Запретить Custom изменять init.el
+(setq enable-local-variables :safe)
+
 ;;; Invaluable UI stuff
 (scroll-bar-mode 0)
 
@@ -114,18 +117,23 @@
   ;;(load-theme 'doom-tomorrow-day t)
   ;;(load-theme 'doom-opera-light t)
   ;;(load-theme 'doom-nord-light t)
-  ;;(set-face-attribute 'default nil :family "Iosevka" :height 130)
+  ;;(set-face-attribute 'default nil :family "Iosevka Nerd Font" :height 130)
   ;; (set-face-attribute 'default nil :family "Ubuntu Mono" :height 120)
-  ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 130)
+  ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 120)
   ;; (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120)
+  (doom-themes-org-config)
+  (doom-themes-visual-bell-config) ;Моргаем строкой состояния вместо сигнала
   ;;(setq default-text-properties '(line-spacing 0.0 line-height 1.2))
   ;;(set-face-attribute 'default nil :family "Monaspace Krypton" :height 120))
   ;; (set-face-attribute 'default nil :family "SpaceMono Nerd Font" :height 120))
   ;;(set-face-attribute 'default nil :family "monospace" :height 120))
 )
 
-
+;;(with-eval-after-load 'org
+  ;;(doom-themes-org-config)
+  ;;(doom-themes-visual-bell-config)
+;;  )
 
 ;;(setq line-spacing 0)
 
@@ -161,6 +169,10 @@
         scroll-margin 0)
   :config
   (ultra-scroll-mode 1))
+
+;;(fido-mode 1)
+;;(fido-vertical-mode 1)
+(setq completion-styles '(basic substring partial-completion flex))
 
 (provide '00-ui)
 
