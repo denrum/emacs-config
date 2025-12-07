@@ -1,8 +1,40 @@
-;;; init.el --- Literate Configuration
-;;; Commentary:
-;; Automatically generated from literate-config.org
-;;; Code:
+#+TITLE: My Emacs Configuration
+#+AUTHOR: Denis Rumyantsev
+#+DATE: $(date +%Y-%m-%d)
+#+PROPERTY: header-args :tangle init.el
 
+* Meta Information
+  :PROPERTIES:
+  :header-args: :tangle init.el
+  :END:
+  
+  #+BEGIN_SRC emacs-lisp
+  ;;; init.el --- Literate Configuration
+  ;;; Commentary:
+  ;; Automatically generated from literate-config.org
+  ;;; Code:
+  #+END_SRC
+
+ 
+* Table of Contents :TOC_4:
+- [[#overview][Overview]]
+- [[#performance-optimizations][Performance Optimizations]]
+- [[#package-management][Package Management]]
+- [[#ui-customization][UI Customization]]
+- [[#completion-system][Completion System]]
+- [[#editing-enhancements][Editing Enhancements]]
+- [[#language-support][Language Support]]
+- [[#version-control][Version Control]]
+- [[#key-bindings][Key Bindings]]
+- [[#final-settings][Final Settings]]
+
+* Overview
+This is my Emacs configuration using the literary programming approach. Each section builds upon the previous ones, documenting not just what each configuration does, but why I chose it. The configuration prioritizes performance, usability, and language-specific features for my development workflow.
+
+* Performance Optimizations
+Before loading any packages, let's optimize Emacs for better performance. These settings prevent slowdowns that can happen with larger configurations.
+
+#+begin_src elisp
 ;; Increase garbage collection threshold for better performance
 (setq gc-cons-threshold 100000000)
 (setq gc-cons-percentage 0.6)
@@ -16,7 +48,12 @@
 ;; Disable bidirectional text for slight performance improvement
 (setq-default bidi-display-reordering 'left-to-right
               bidi-paragraph-direction 'left-to-right)
+#+end_src
 
+* Package Management
+Next, we'll set up package management using the built-in =package= system with MELPA as the primary source.
+
+#+begin_src elisp
 ;; Import and initialize package manager
 (require 'package)
 
@@ -40,7 +77,15 @@
 ;; Configure use-package to handle automatic installation
 (eval-and-compile
   (setq use-package-always-ensure t))
+#+end_src
 
+* UI Customization
+Now we'll customize the appearance and behavior of Emacs to create a pleasant, distraction-free environment.
+
+** Basic UI Elements
+First, let's remove visual clutter and set up clean defaults:
+
+#+begin_src elisp
 ;; Disable scroll bars, tool bars, and menu bars
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
@@ -61,7 +106,12 @@
 ;; Enable pixel-level scrolling
 (pixel-scroll-mode t)
 (pixel-scroll-precision-mode t)
+#+end_src
 
+** Themes and Fonts
+Choose a theme and set up the font to create an aesthetically pleasing interface:
+
+#+begin_src elisp
 (use-package ef-themes
   :ensure t
   :config
@@ -69,7 +119,12 @@
   (load-theme 'ef-cyprus t)
   ;; Set the default font family and size
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120))
+#+end_src
 
+** Additional UI Enhancements
+Add visual enhancements for better user experience:
+
+#+begin_src elisp
 ;; Add padding around the main editing area for a more spacious feel
 (use-package spacious-padding
   :ensure t
@@ -103,7 +158,15 @@
   :hook ((csharp-mode) . indent-bars-mode)
   :custom
   (indent-bars-width-frac 0.1))
+#+end_src
 
+* Completion System
+Set up a powerful completion system for navigating files and buffers efficiently.
+
+** Ivy and Associated Packages
+Install and configure the core completion system:
+
+#+begin_src elisp
 ;; Configure the core completion system with IVY
 (use-package ivy
   :ensure t
@@ -135,7 +198,12 @@
   :ensure t
   :config
   (marginalia-mode))
+#+end_src
 
+** Better Scrolling Experience
+Enhance the scrolling experience with ultra-scroll:
+
+#+begin_src elisp
 (use-package ultra-scroll
   :ensure t
   :vc (:url "https://github.com/jdtsmith/ultra-scroll" :rev :newest)
@@ -144,7 +212,15 @@
         scroll-margin 0)
   :config
   (ultra-scroll-mode 1))
+#+end_src
 
+* Editing Enhancements
+Configure packages that improve the editing experience.
+
+** Brackets and Parentheses Management
+Better handling of parentheses and brackets:
+
+#+begin_src elisp
 (use-package smartparens
   :ensure t
   :config
@@ -152,7 +228,12 @@
   (smartparens-global-mode 1)
   ;; Enable special pairing in programming modes
   (add-hook 'prog-mode-hook 'turn-on-smartparens-mode))
+#+end_src
 
+** Show Available Key Bindings
+Display available key bindings in a popup:
+
+#+begin_src elisp
 (use-package which-key
   :ensure t
   :init
@@ -160,7 +241,15 @@
   :config
   (setq which-key-idle-delay 0.5
         which-key-idle-secondary-delay 0.0))
+#+end_src
 
+* Language Support
+Configure language-specific features and LSP support for development.
+
+** Universal LSP Client
+Set up Eglot as the preferred LSP client for various languages:
+
+#+begin_src elisp
 (use-package eglot
   :ensure t
   :hook ((clojure-mode . eglot-ensure)
@@ -189,7 +278,12 @@
                  (display-buffer-reuse-window display-buffer-at-bottom)
                  (reusable-frames . visible)
                  (window-height . 0.3))))
+#+end_src
 
+** Clojure Development
+Set up CIDER for Clojure development:
+
+#+begin_src elisp
 (use-package cider
   :ensure t
   :config
@@ -203,13 +297,23 @@
         cider-repl-pop-to-buffer-on-connect 'nil
         cider-repl-use-clojure-font-lock t
         cider-repl-wrap-history t))
+#+end_src
 
+** Rust Development
+Configuration for Rust development:
+
+#+begin_src elisp
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'"
   :init
   (setq rust-format-on-save t))
+#+end_src
 
+** Go Development
+Configuration for Go development:
+
+#+begin_src elisp
 (use-package go-mode
   :ensure t
   :mode "\\.go\\'"
@@ -218,12 +322,22 @@
             (lambda ()
               (setq tab-width 4)
               (setq indent-tabs-mode t))))
+#+end_src
 
+** Python Development
+Basic Python setup:
+
+#+begin_src elisp
 (use-package python-mode
   :ensure t
   :mode "\\.py\\'"
   :interpreter "python")
+#+end_src
 
+* Version Control
+Configure Magit for Git workflows:
+
+#+begin_src elisp
 (use-package magit
   :ensure t
   :bind (("C-c g" . magit-status))
@@ -231,7 +345,12 @@
   (setq magit-stage-all-confirm nil
         magit-unstage-all-confirm nil
         magit-save-repository-buffers 'dont-ask))
+#+end_src
 
+* Project Management
+Set up projectile for project-wide operations:
+
+#+begin_src elisp
 (use-package projectile
   :ensure t
   :init
@@ -243,7 +362,15 @@
         projectile-indexing-method 'alien
         projectile-enable-caching t
         projectile-sort-order 'recentf))
+#+end_src
 
+* Key Bindings
+Finally, we'll set up a comprehensive key binding system using General.el for a consistent experience.
+
+** Leader Key Definition
+We'll define a Spacemacs-like leader key for common operations:
+
+#+begin_src elisp
 (use-package general
   :ensure t
   :config
@@ -376,39 +503,16 @@
   ;; Escape key configuration
   (general-define-key
    "<escape>" 'keyboard-escape-quit))
+#+end_src
 
+* Final Settings
+Wrap up with some final configuration settings and cleanup:
+
+#+begin_src elisp
 ;; Allow custom variables to be saved properly
 (setq custom-safe-things t)
 
 ;; Provide the configuration
 (provide 'init)
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(fringe ((t :background "#fcf7ef")))
- '(header-line ((t :box (:line-width 4 :color "#f0ece0" :style nil))))
- '(header-line-highlight ((t :box (:color "#242521"))))
- '(keycast-key ((t)))
- '(line-number ((t :background "#fcf7ef")))
- '(mode-line ((t :box (:line-width 6 :color "#c0df6f" :style nil))))
- '(mode-line-active ((t :box (:line-width 6 :color "#c0df6f" :style nil))))
- '(mode-line-highlight ((t :box (:color "#242521"))))
- '(mode-line-inactive ((t :box (:line-width 6 :color "#e5e3d8" :style nil))))
- '(tab-bar-tab ((t :box (:line-width 4 :color "#fcf7ef" :style nil))))
- '(tab-bar-tab-inactive ((t :box (:line-width 4 :color "#c5c3b8" :style nil))))
- '(tab-line-tab ((t)))
- '(tab-line-tab-active ((t)))
- '(tab-line-tab-inactive ((t)))
- '(vertical-border ((t :background "#fcf7ef" :foreground "#fcf7ef")))
- '(window-divider ((t (:background "#fcf7ef" :foreground "#fcf7ef"))))
- '(window-divider-first-pixel ((t (:background "#fcf7ef" :foreground "#fcf7ef"))))
- '(window-divider-last-pixel ((t (:background "#fcf7ef" :foreground "#fcf7ef")))))
+#+end_src

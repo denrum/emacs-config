@@ -2,6 +2,7 @@
 !.gitignore
 !init.el
 !/stuff
+!literate-config.org
 
 # Compiled
 *.elc
