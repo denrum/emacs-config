@@ -104,6 +104,190 @@
   :custom
   (indent-bars-width-frac 0.1))
 
+;; Treemacs file tree
+(use-package treemacs
+  :ensure t
+  :bind (("C-c C-t" . treemacs)))
+
+(use-package treemacs-evil
+  :after (treemacs evil)
+  :ensure t)
+
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
+
+(defun my/treemacs-projectile-auto-open ()
+  "Открыть treemacs при переключении проекта в projectile."
+  (when (fboundp 'treemacs)
+    (treemacs)))
+
+(add-hook 'projectile-after-switch-project-hook #'my/treemacs-projectile-auto-open)
+
+(use-package nerd-icons
+  :ensure t)
+
+(setq nerd-icons-font-family "Symbols Nerd Font Mono")
+
+(require 'nerd-icons)
+(require 'treemacs)
+
+(setq treemacs-follow-after-init t)
+(setq treemacs-follow-mode -1)
+
+(defface treemacs-nerd-icons-root-face
+  '((t (:inherit nerd-icons-dorange)))
+  "Face used for the root icon in nerd-icons theme."
+  :group 'treemacs-faces)
+
+(defface treemacs-nerd-icons-file-face
+  '((t (:inherit nerd-icons-orange)))
+  "Face used for the directory and file icons in nerd-icons theme."
+  :group 'treemacs-faces)
+
+(defvar treemacs-nerd-icons-tab (propertize "\t" :face 'treemacs-nerd-icons-file-face))
+
+;;(defvar treemacs-nerd-icons-space (propertize " " :font-family))
+
+(treemacs-create-theme "nerd-icons"
+                       :config
+                       (progn
+                         (dolist (item nerd-icons-extension-icon-alist)
+                           (let* ((extension (car item))
+                                  (func (cadr item))
+                                  (args (append (list (cadr (cdr item))) '(:v-adjust -0.05 :height 1.0) (cdr (cddr item))))
+                                  (icon (apply func args)))
+                             (let* ((icon-pair (cons (format "%s%s" icon treemacs-nerd-icons-tab) (format "%s%s" icon treemacs-nerd-icons-tab)))
+                                    (gui-icons (treemacs-theme->gui-icons treemacs--current-theme))
+                                    (tui-icons (treemacs-theme->tui-icons treemacs--current-theme))
+                                    (gui-icon  (car icon-pair))
+                                    (tui-icon  (cdr icon-pair)))
+                               (ht-set! gui-icons extension gui-icon)
+                               (ht-set! tui-icons extension tui-icon))))
+
+                         ;; directory and other icons
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-repo"   :face 'treemacs-nerd-icons-root-face) treemacs-nerd-icons-tab)
+                                               :extensions (root-closed root-open)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder_open"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (dir-open)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (dir-closed)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder_open"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (src-open)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (src-closed)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder_open"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (build-open)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (build-closed)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder_open"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (test-open)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (test-closed)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-package"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (tag-open)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-package"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (tag-closed)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-tag"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (tag-leaf)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-flame"  :face 'nerd-icons-red) treemacs-nerd-icons-tab)
+                                               :extensions (error)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-stop"  :face 'nerd-icons-yellow) treemacs-nerd-icons-tab)
+                                               :extensions (warning)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-info"   :face 'nerd-icons-blue) treemacs-nerd-icons-tab)
+                                               :extensions (info)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-mail"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (mail)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-bookmark"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (bookmark)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-monitor"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (screen)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-home"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (house)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-list"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (list)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-repeat"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (repeat)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-suitcase"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (suitcase)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-close"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (close)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-calendar"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (calendar)
+                                               :fallback 'same-as-icon)
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-briefcase"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (briefcase)
+                                               :fallback 'same-as-icon)
+
+                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-file_o" :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                               :extensions (fallback)
+                                               :fallback 'same-as-icon)))
+
+
+(treemacs-load-theme "nerd-icons")
+
+;;(treemacs-load-all-the-icons-with-workaround-font "Hermit")
+;;(setq treemacs-indentation '(20 px))
+
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :ensure t)
+
+;; (set-face-attribute 'treemacs-file-face nil :foreground "#555555")
+;; (set-face-attribute 'treemacs-file-face nil :height 100)
+;; (set-face-attribute 'treemacs-directory-face nil :height 100)
+;; (set-face-attribute 'treemacs-directory-collapsed-face nil :height 100)
+;; (set-face-attribute 'treemacs-file-face nil :family "Berkeley Mono")
+
+;; (set-face-attribute 'treemacs-file-face nil :height 100)
+;; (set-face-attribute 'treemacs-directory-face nil :height 100)
+;; (set-face-attribute 'treemacs-git-modified-face nil :height 100)
+;;(set-face-attribute 'treemacs-all-the-icons-root-face nil :height 120)
+;;(set-face-attribute 'treemacs-all-the-icons-file-face nil :height 120)
+;;(set-face-attribute 'treemacs-all-the-icons-file-face nil :height 50)
+
+(set-face-attribute 'treemacs-nerd-icons-file-face nil :height 120)
+;;(set-face-attribute 'treemacs-nerd-icons-root-face nil :height 150)
+
+;;(treemacs-load-all-the-icons-with-workaround-font "JetBrainsMono Nerd Font Mono")
+
+;;(treemacs-resize-icons 20)
+
+;; Dired settings
+(setq delete-by-moving-to-trash t)
+
+(use-package ultra-scroll
+  :ensure t
+  :vc (:url "https://github.com/jdtsmith/ultra-scroll" :rev :newest)
+  :init
+  (setq scroll-conservatively 101  ; important!
+        scroll-margin 0)
+  :config
+  (ultra-scroll-mode 1))
+
 ;; Configure the core completion system with IVY
 (use-package ivy
   :ensure t
@@ -136,22 +320,16 @@
   :config
   (marginalia-mode))
 
-(use-package ultra-scroll
-  :ensure t
-  :vc (:url "https://github.com/jdtsmith/ultra-scroll" :rev :newest)
-  :init
-  (setq scroll-conservatively 101  ; important!
-        scroll-margin 0)
-  :config
-  (ultra-scroll-mode 1))
-
 (use-package smartparens
   :ensure t
   :config
   (require 'smartparens-config)
   (smartparens-global-mode 1)
   ;; Enable special pairing in programming modes
-  (add-hook 'prog-mode-hook 'turn-on-smartparens-mode))
+  (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
+  ;; Specific mode hooks for clojure and emacs-lisp
+  (add-hook 'clojure-mode-hook 'smartparens-mode)
+  (add-hook 'emacs-lisp-mode-hook 'smartparens-mode))
 
 (use-package which-key
   :ensure t
@@ -160,6 +338,186 @@
   :config
   (setq which-key-idle-delay 0.5
         which-key-idle-secondary-delay 0.0))
+
+(use-package projectile
+  :ensure t
+  :bind (("C-c C-t" . treemacs)
+         ("C-c p" . projectile-command-map))
+  :init
+  (projectile-mode 1)
+  :config
+  (setq projectile-completion-system 'ivy
+        projectile-indexing-method 'alien
+        projectile-enable-caching t
+        projectile-sort-order 'recentf
+        projectile-use-git-grep t))
+
+(use-package dape
+  :ensure t
+  ;;:preface
+  ;; By default dape shares the same keybinding prefix as `gud'
+  ;; If you do not want to use any prefix, set it to nil.
+  ;; (setq dape-key-prefix "\C-x\C-a")
+
+  ;;:hook
+  ;; Save breakpoints on quit
+  ;; ((kill-emacs . dape-breakpoint-save)
+  ;; Load breakpoints on startup
+  ;;  (after-init . dape-breakpoint-load))
+
+  :config
+  ;; Turn on global bindings for setting breakpoints with mouse
+  (dape-breakpoint-global-mode)
+
+  ;; Info buffers to the right
+  (setq dape-buffer-window-arrangement 'right)
+
+  ;; Info buffers like gud (gdb-mi)
+  ;; (setq dape-buffer-window-arrangement 'gud)
+  ;; (setq dape-info-hide-mode-line nil)
+
+  ;; Pulse source line (performance hit)
+  (add-hook 'dape-display-source-hook 'pulse-momentary-highlight-one-line)
+
+  ;; Showing inlay hints
+  (setq dape-inlay-hints t)
+
+  ;; Save buffers on startup, useful for interpreted languages
+  ;; (add-hook 'dape-start-hook (lambda () (save-some-buffers t t)))
+
+  ;; Kill compile buffer on build success
+  (add-hook 'dape-compile-hook 'kill-buffer)
+
+  ;; Projectile users
+  (setq dape-cwd-fn 'projectile-project-root)
+  ;;(setq dape-cwd-fn 'sharper--nearest-project-dir)
+
+  (add-to-list 'dape-configs `(netcoredbg
+     modes (csharp-mode csharp-ts-mode)
+     ensure dape-ensure-command
+     command "netcoredbg"
+     command-args ["--interpreter=vscode"]
+     :request "launch"
+     :cwd sharper--nearest-project-dir
+     :program find-current-file-project-dll
+	 :stopAtEntry nil))
+
+  ;; (add-to-list 'dape-configs `(dlv
+  ;;    modes (go-mode go-ts-mode)
+  ;;    ensure dape-ensure-command
+  ;;    command "dlv"
+  ;;    command-args ["test" "neltom.com/system/locations" "--listen" "127.0.0.1::autoport" "--allow-non-terminal-interactive=true"]
+  ;; 	 command-cwd dape-command-cwd
+  ;; 	 port :autoport
+  ;; 	 command-insert-stderr t
+  ;;    :request "launch"
+  ;; 	 :type "debug"
+  ;;    :cwd "."
+  ;;    :program "."
+  ;; 	 :stopAtEntry nil))
+  )
+
+;;(setq dape-debug t)
+
+
+;; Enable repeat mode for more ergonomic `dape' use
+(use-package repeat
+  :config
+  (repeat-mode))
+
+(use-package company
+  :ensure t
+  :hook ((emacs-lisp-mode clojure-mode lisp-mode csharp-mode go-mode go-ts-mode) . company-mode)
+  )
+
+(setq company-show-quick-access t
+      company-tooltip-align-annotations t
+      company-idle-delay 0.2
+      company-minimum-prefix-length 2
+      company-tooltip-limit 20)
+
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-capf))
+
+(use-package flycheck
+  :ensure t
+  :hook ((emacs-lisp-mode clojure-mode) . flycheck-mode))
+
+;; C# project file handling
+(add-to-list 'auto-mode-alist '("\\.csproj" . nxml-mode))
+
+;;Sharper - C# development utilities
+(use-package sharper
+  :ensure t
+  :vc (:url "https://github.com/sebasmonia/sharper" :rev :newest)
+  :bind
+  ("C-c n" . sharper-main-transient))
+
+(require 'sharper)
+
+(require 'xml)
+
+(defun read-xml-file (file)
+  "Read xml FILE to temp buffer."
+  (with-temp-buffer
+    (insert-file-contents file)
+    (libxml-parse-xml-region (point-min) (point-max))))
+
+(require 'dom)
+
+(defun find-tag-value (xml tag)
+  "Find the value of the first occurrence of TAG in the XML/HTML tree XML."
+  (car (cddr (car (dom-by-tag xml tag)))))
+
+(defun find-current-file-project-dll ()
+  "Find dll name of current file project."
+  (let* ((csproj (file-relative-name (car (file-expand-wildcards (file-name-concat (sharper--nearest-project-dir) "*.csproj")))))
+		 (dir (file-name-directory csproj))
+		 (xml-data (read-xml-file csproj))
+		 (assembly-name (find-tag-value xml-data 'AssemblyName))
+		 (assembly-file-name (if assembly-name
+								 (concat assembly-name ".dll")
+							   (concat (file-name-base csproj) ".dll"))))
+	(file-relative-name
+	 (file-relative-name
+	  (car
+	   (file-expand-wildcards
+		(file-name-concat dir "bin" "Debug" "*" assembly-file-name)))))))
+
+(require 'cl-lib)
+
+(defvar nunit-test-methodfunc-template "dotnet test --filter %e --logger \"trx;LogFileName=%f\"" "Template for \"dotnet test\" invocations to run the \"current test\".")
+
+(defun nunit-run-test-at-point (&optional _transient-params)
+  "Run \"dotnet test\", ignore TRANSIENT-PARAMS, setup call via `sharper--current-test'."
+  (interactive
+   (list (transient-args 'sharper-transient-test)))
+  ;;(transient-set)
+  (if sharper--current-test
+      (let* ((temp-file (make-temp-file "dotnet"))
+			 (default-directory (car sharper--current-test))
+             (command (sharper--strformat nunit-test-methodfunc-template
+                                          ?e (shell-quote-argument (cdr sharper--current-test))
+										  ?f temp-file)))
+        (sharper--log-command "Testing method/function at point" command)
+        (compile command))
+    ;; go back to the main menu if sharper--current-test is not set
+    (sharper-main-transient)))
+
+(use-package yaml-mode
+  :ensure t)
+
+(use-package dockerfile-mode
+  :ensure t)
+
+(use-package docker
+  :ensure t)
+
+(use-package docker-compose-mode
+  :ensure t)
+
+(use-package restclient
+  :ensure t)
 
 (use-package eglot
   :ensure t
@@ -212,17 +570,216 @@
 
 (use-package go-mode
   :ensure t
-  :mode "\\.go\\'"
-  :init
-  (add-hook 'go-mode-hook
-            (lambda ()
-              (setq tab-width 4)
-              (setq indent-tabs-mode t))))
+  :init (add-hook 'go-mode-hook (lambda () (add-hook 'before-save-hook 'gofmt-before-save nil t)))
+  :bind (("C-c c" . comment-or-uncomment-region)
+		 ("C-c t d" . my/dape-debug-go-test)))
 
-(use-package python-mode
+;; (add-hook 'go-ts-mode-hook
+;; 		  (lambda ()
+;; 			(add-hook 'before-save-hook 'gofmt-before-save)))
+
+;; (add-hook 'go-mode-hook
+;; 		  (lambda ()
+;; 			(add-hook 'before-save-hook 'gofmt-before-save)))
+
+(setq-default tab-width 4)
+(setq-default go-ts-mode-indent-offset 4)
+
+;; (add-hook 'go-mode-hook 'lsp-deferred)
+;; (add-hook 'go-mode-hook #'flycheck-mode)
+
+;; Additional Go packages
+(use-package gotest
+  :ensure t
+  :after (go-mode go-ts-mode)
+  :bind (:map go-mode-map
+              ("C-c t f" . go-test-current-file)
+              ("C-c t t" . go-test-current-test)
+              ("C-c t j" . go-test-current-project)
+              ("C-c t b" . go-test-current-benchmark)
+              ("C-c t c" . go-test-current-coverage)
+              ("C-c t x" . go-run)))
+
+(use-package go-tag
+  :ensure t
+  :bind (:map go-mode-map
+              ("C-c t a" . go-tag-add)
+              ("C-c t r" . go-tag-remove))
+  :init (setq go-tag-args (list "-transform" "camelcase")))
+
+(use-package templ-ts-mode
+  :ensure t)
+
+(add-hook 'templ-ts-mode-hook
+          (lambda ()
+            (add-hook 'after-save-hook
+                      (lambda ()
+                        (when (string-match "\\.templ\\'" (buffer-file-name))
+                          (let ((file (buffer-file-name)))
+                          (shell-command (concat "templ fmt " (shell-quote-argument file)))
+                          (revert-buffer t t t))) ; Автоматически перечитать
+                      nil t))))
+
+(require 'gotest)
+
+(defun my/dape-debug-go-test ()
+  "Запуск отладки текущего Go-теста с dape-mode."
+  (interactive)
+  (let ((test-package (go-test--gb-find-package))
+		(test-name (go-test--get-current-test))) ; Получить имя теста под курсором
+	(message "Current test: %s in %s" test-name test-package)
+	(message "Current file testing data: %s" (go-test--get-current-file-testing-data))
+    (dape
+     `(:name "Debug Go Test"
+       :type "debug"
+       :request "launch"
+       :mode "test"
+	   :cwd "."
+       :program "." ;;,(expand-file-name (buffer-file-name)) ; Путь к текущему файлу
+       :args ["run" ,(concat "^" test-name "$")] ; Запуск конкретного теста
+       command "dlv" ;;,(executable-find "dlv") ; Путь к dlv (автоматически ищется в PATH)
+	   command-cwd ,test-package
+       command-insert-stderr t
+	   command-args ("dap" "--listen" "localhost::autoport")
+	   port :autoport
+     ))))
+
+(defun my/dape-debug-go-main ()
+  "Запуск отладки текущего Go-теста с dape-mode."
+  (interactive)
+  (let ((test-package (go-test--gb-find-package)))
+	(message "Current packet: %s" test-package)
+	;;(message "Current file testing data: %s" (go-test--get-current-file-testing-data))
+    (dape
+     `(:name "Debug Go Main"
+       :type "debug"
+       :request "launch"
+       :mode "debug"
+	   :cwd "."
+       :program "." ;;,(expand-file-name (buffer-file-name)) ; Путь к текущему файлу
+       :args ["run" test-package] ; Запуск конкретного теста
+       command "dlv" ;;,(executable-find "dlv") ; Путь к dlv (автоматически ищется в PATH)
+	   command-cwd ,test-package
+       command-insert-stderr t
+	   command-args ("dap" "--listen" "localhost::autoport")
+	   port :autoport
+     ))))
+
+
+;;(bind-key "C-c t d" 'my/dape-debug-go-test go-mode-map)
+
+;; Additional packages for Common Lisp
+  (use-package slime
+    :ensure t)
+
+  (use-package slime-company
+    :ensure t)
+
+  (require 'slime-autoloads)
+
+  (setq slime-autoloads '(".slime-autoloads.lisp"))
+
+  (add-hook 'common-lisp-mode-hook 'lsp-deferred)
+
+  ;; Configure SBCL as the Lisp program for SLIME.
+  (add-to-list 'exec-path "/usr/bin")
+  (setq inferior-lisp-program "sbcl")
+
+  (eval-after-load 'company
+    '(add-to-list 'company-backends 'company-slime))
+  (slime-setup '(slime-fancy slime-company))
+
+  ;; CIDER updated function
+(defun cider-eval-end-of-sexp (arg)
+  (interactive "P")
+  (save-excursion
+    (forward-char)
+    (cider-eval-last-sexp arg)))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((sql . t)))
+
+(setq sql-postgres-program "/usr/bin/psql")
+
+
+;; (use-package pg
+;;   :vc (:url "https://github.com/emarsden/pg-el/" :rev :newest))
+
+;; (use-package pgmacs
+;;   :vc (:url "https://github.com/emarsden/pgmacs/" :rev :newest))
+
+(use-package python
   :ensure t
   :mode "\\.py\\'"
   :interpreter "python")
+
+(use-package plantuml-mode
+  :ensure t)
+
+(setq org-plantuml-jar-path (expand-file-name "/home/denis/Projects/arch/plantuml-mit-1.2025.2.jar"))
+(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t) (emacs-lisp . t) (sql .t)))
+
+(use-package org-modern
+  :ensure t
+  :hook
+  (org-mode . org-modern-mode))
+
+(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+
+
+(defun my-org-extract-and-show-json ()
+  "Извлечь JSON из текущей ячейки таблицы и показать с форматированием"
+  (interactive)
+  (when (org-at-table-p)
+    (let* ((element (org-element-at-point))
+           (table (org-element-lineage element '(table) t))
+           (value (org-table-get (org-table-current-line)
+                                (org-table-current-column))))
+      (if (and value (string-match-p "[{\\[]" value)) ; Проверка на JSON
+          (my-show-formatted-json value)
+        (message "Current cell doesn't contain JSON data")))))
+
+(defun my-show-formatted-json (json-string)
+  "Показать отформатированный JSON в отдельном буфере"
+  (let ((json-buffer (get-buffer-create "*Formatted JSON*")))
+    (with-current-buffer json-buffer
+      (erase-buffer)
+      (insert (my-beautify-json json-string))
+      (when (fboundp 'json-mode)
+        (json-mode))
+      (goto-char (point-min)))
+    (display-buffer json-buffer '(display-buffer-pop-up-window . nil))))
+
+(defun my-beautify-json (json-str)
+  "Украсить JSON строку"
+  (condition-case err
+      (let* ((json-object (json-read-from-string json-str))
+             (temp-buffer (generate-new-buffer " *json-temp*")))
+        (with-current-buffer temp-buffer
+          (insert (json-encode json-object))
+          (json-pretty-print-buffer)
+          (let ((result (buffer-string)))
+            (kill-buffer temp-buffer)
+            result)))
+    (error
+     (kill-buffer temp-buffer)
+     (format "Error parsing JSON: %s\nOriginal: %s"
+             (error-message-string err) json-str))))
+
+(defun my-org-auto-format-json-at-point ()
+  "Автоматически форматировать JSON при наведении курсора"
+  (interactive)
+  (when (org-at-table-p)
+    (let ((cell-content (org-table-get-field)))
+      (when (and cell-content
+                 (or (string-prefix-p "{" cell-content)
+                     (string-prefix-p "[" cell-content)))
+        (my-show-formatted-json cell-content)))))
+
+;; Автоматический запуск при переходе по таблице
+(add-hook 'org-table-follow-field-hook 'my-org-auto-format-json-at-point)
 
 (use-package magit
   :ensure t
@@ -231,18 +788,6 @@
   (setq magit-stage-all-confirm nil
         magit-unstage-all-confirm nil
         magit-save-repository-buffers 'dont-ask))
-
-(use-package projectile
-  :ensure t
-  :init
-  (projectile-mode 1)
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :config
-  (setq projectile-completion-system 'ivy
-        projectile-indexing-method 'alien
-        projectile-enable-caching t
-        projectile-sort-order 'recentf))
 
 (use-package general
   :ensure t
@@ -377,38 +922,60 @@
   (general-define-key
    "<escape>" 'keyboard-escape-quit))
 
+;; UUID Generation Function
+(defun xah-insert-random-uuid ()
+  "Insert a UUID.
+This commands calls “uuidgen” on MacOS, Linux, and calls PowelShell on Microsoft Windows.
+URL `http://xahlee.info/emacs/emacs/elisp_generate_uuid.html'
+Version 2020-06-04"
+  (interactive)
+  (cond
+   ((string-equal system-type "windows-nt")
+    (shell-command "pwsh.exe -Command [guid]::NewGuid().toString()" t))
+   ((string-equal system-type "darwin") ; Mac
+    (shell-command "uuidgen" t))
+   ((string-equal system-type "gnu/linux")
+    (insert (substring (shell-command-to-string "uuidgen") 0 36)))
+   (t
+    ;; code here by Christopher Wellons, 2011-11-18.
+    ;; and editted Hideki Saito further to generate all valid variants for "N" in xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx format.
+    (let ((myStr (md5 (format "%s%s%s%s%s%s%s%s%s%s"
+                              (user-uid)
+                              (emacs-pid)
+                              (system-name)
+                              (user-full-name)
+                              (current-time)
+                              (emacs-uptime)
+                              (garbage-collect)
+                              (buffer-string)
+                              (random)
+                              (recent-keys)))))
+      (insert (format "%s-%s-4%s-%s%s-%s"
+                      (substring myStr 0 8)
+                      (substring myStr 8 12)
+                      (substring myStr 13 16)
+                      (format "%x" (+ 8 (random 4)))
+                      (substring myStr 17 20)
+                      (substring myStr 20 32)))))))
+
+;; Text transformation functions
+(defun to-underscore ()
+  "To snake case."
+  (interactive)
+  (progn (replace-regexp "\\([A-Z]\\)" "_\\1" nil (region-beginning) (region-end))
+		 (downcase-region (region-beginning) (region-end))))
+
+(defun word-to-underscore ()
+  "Word to snake case."
+  (interactive)
+  (save-excursion
+	(let ((bounds (bounds-of-thing-at-point 'word)))
+	  (replace-regexp "\\([A-Z]\\)" "_\\1" nil (1+ (car bounds)) (cdr bounds))
+	  (downcase-region (car bounds) (cdr bounds)))))
+
 ;; Allow custom variables to be saved properly
 (setq custom-safe-things t)
 
 ;; Provide the configuration
 (provide 'init)
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(fringe ((t :background "#fcf7ef")))
- '(header-line ((t :box (:line-width 4 :color "#f0ece0" :style nil))))
- '(header-line-highlight ((t :box (:color "#242521"))))
- '(keycast-key ((t)))
- '(line-number ((t :background "#fcf7ef")))
- '(mode-line ((t :box (:line-width 6 :color "#c0df6f" :style nil))))
- '(mode-line-active ((t :box (:line-width 6 :color "#c0df6f" :style nil))))
- '(mode-line-highlight ((t :box (:color "#242521"))))
- '(mode-line-inactive ((t :box (:line-width 6 :color "#e5e3d8" :style nil))))
- '(tab-bar-tab ((t :box (:line-width 4 :color "#fcf7ef" :style nil))))
- '(tab-bar-tab-inactive ((t :box (:line-width 4 :color "#c5c3b8" :style nil))))
- '(tab-line-tab ((t)))
- '(tab-line-tab-active ((t)))
- '(tab-line-tab-inactive ((t)))
- '(vertical-border ((t :background "#fcf7ef" :foreground "#fcf7ef")))
- '(window-divider ((t (:background "#fcf7ef" :foreground "#fcf7ef"))))
- '(window-divider-first-pixel ((t (:background "#fcf7ef" :foreground "#fcf7ef"))))
- '(window-divider-last-pixel ((t (:background "#fcf7ef" :foreground "#fcf7ef")))))
