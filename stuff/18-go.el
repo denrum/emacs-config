@@ -3,13 +3,20 @@
 ;;; Set up go for Emacs
 ;;; Code:
 
-(use-package go-ts-mode
+(use-package go-mode
   :ensure t
-  :init (add-hook 'before-save-hook 'gofmt-before-save))
+  ;;:init (add-hook 'before-save-hook 'gofmt-before-save)
+  ;;:hook (go-ts-mode . gofmt-before-save)
+  :init (add-hook 'go-ts-mode-hook (lambda () (add-hook 'before-save-hook 'gofmt-before-save nil t)))
+  :bind (("C-c c" . comment-or-uncomment-region)))
 
-(add-hook 'go-ts-mode-hook
-		  (lambda ()
-			(add-hook 'before-save-hook 'gofmt-before-save)))
+;; (add-hook 'go-ts-mode-hook
+;; 		  (lambda ()
+;; 			(add-hook 'before-save-hook 'gofmt-before-save)))
+
+;; (add-hook 'go-mode-hook
+;; 		  (lambda ()
+;; 			(add-hook 'before-save-hook 'gofmt-before-save)))
 
 (setq-default tab-width 4)
 (setq-default go-ts-mode-indent-offset 4)
@@ -202,5 +209,5 @@
 ;;                      templ-ts--range-rules))
 
 
-(provide '16-go)
+(provide '18-go)
 ;;; 18-go.el ends here

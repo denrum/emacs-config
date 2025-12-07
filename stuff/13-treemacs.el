@@ -4,7 +4,8 @@
 ;;; Code:
 
 (use-package treemacs
-  :ensure t)
+  :ensure t
+  :bind (("C-c t" . treemacs)))
 
 (use-package treemacs-evil
   :after (treemacs evil)

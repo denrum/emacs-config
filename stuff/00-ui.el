@@ -104,31 +104,37 @@
   ;;:after doom-themes
   :init (spacious-padding-mode 1))
 
-(use-package doom-themes
+;; (use-package doom-themes
+;;   :ensure t
+;;   :config
+;;   ;; Global settings (defaults)
+;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;   ;;(load-theme 'doom-flatwhite t)
+;;   ;;(load-theme 'doom-one-light)
+;;   (load-theme 'doom-one t)
+;;   ;;(load-theme 'doom-nord t)
+;;   ;;(load-theme 'doom-tomorrow-day t)
+;;   ;;(load-theme 'doom-opera-light t)
+;;   ;;(load-theme 'doom-nord-light t)
+;;   ;;(set-face-attribute 'default nil :family "Iosevka Nerd Font" :height 130)
+;;   ;; (set-face-attribute 'default nil :family "Ubuntu Mono" :height 120)
+;;   ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 120)
+;;   ;; (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
+;;   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120)
+;;   (doom-themes-org-config)
+;;   (doom-themes-visual-bell-config) ;Моргаем строкой состояния вместо сигнала
+;;   ;;(setq default-text-properties '(line-spacing 0.0 line-height 1.2))
+;;   ;;(set-face-attribute 'default nil :family "Monaspace Krypton" :height 120))
+;;   ;; (set-face-attribute 'default nil :family "SpaceMono Nerd Font" :height 120))
+;;   ;;(set-face-attribute 'default nil :family "monospace" :height 120))
+;; )
+;
+(use-package ef-themes
   :ensure t
   :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  ;;(load-theme 'doom-flatwhite t)
-  ;;(load-theme 'doom-one-light)
-  (load-theme 'doom-one t)
-  ;;(load-theme 'doom-nord t)
-  ;;(load-theme 'doom-tomorrow-day t)
-  ;;(load-theme 'doom-opera-light t)
-  ;;(load-theme 'doom-nord-light t)
-  ;;(set-face-attribute 'default nil :family "Iosevka Nerd Font" :height 130)
-  ;; (set-face-attribute 'default nil :family "Ubuntu Mono" :height 120)
-  ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 120)
-  ;; (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120)
-  (doom-themes-org-config)
-  (doom-themes-visual-bell-config) ;Моргаем строкой состояния вместо сигнала
-  ;;(setq default-text-properties '(line-spacing 0.0 line-height 1.2))
-  ;;(set-face-attribute 'default nil :family "Monaspace Krypton" :height 120))
-  ;; (set-face-attribute 'default nil :family "SpaceMono Nerd Font" :height 120))
-  ;;(set-face-attribute 'default nil :family "monospace" :height 120))
-)
+  (load-theme 'ef-cyprus t))
 
 ;;(with-eval-after-load 'org
   ;;(doom-themes-org-config)
