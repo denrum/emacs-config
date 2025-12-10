@@ -1,4 +1,5 @@
-;;; init.el --- Literate Configuration
+;; -*- lexical-binding: t -*-
+;; init.el - Literate Configuration
 ;;; Commentary:
 ;; Automatically generated from literate-config.org
 ;;; Code:
@@ -41,6 +42,8 @@
 (eval-and-compile
   (setq use-package-always-ensure t))
 
+(require 'use-package)
+
 ;; Disable scroll bars, tool bars, and menu bars
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
@@ -63,23 +66,44 @@
 (pixel-scroll-precision-mode t)
 
 (use-package ef-themes
-  :ensure t
-  :config
-  ;; Apply the theme with a light background
-  (load-theme 'ef-cyprus t)
-  ;; Set the default font family and size
-  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120))
+      :ensure t
+        :config
+        ;; Apply the theme with a light background
+        (load-theme 'ef-cyprus t)
+        ;; Set the default font family and size
+        (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110))
+
+    ;; (use-package 
+    ;;   doom-themes
+    ;;   :ensure t
+    ;;   :config
+    ;;   ;; Global settings (defaults)
+    ;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+    ;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    ;;   ;;(load-theme 'doom-flatwhite t)
+    ;;   (load-theme 'doom-one-light)
+    ;;   ;;(load-theme 'doom-one t)
+    ;;   ;;(load-theme 'doom-nord t)
+    ;;   ;;(load-theme 'doom-tomorrow-day t)
+    ;;   ;;(load-theme 'doom-opera-light t)
+    ;;   ;;(load-theme 'doom-nord-light t)
+    ;;   ;;(set-face-attribute 'default nil :family "Iosevka Nerd Font" :height 130)
+    ;;   ;; (set-face-attribute 'default nil :family "Ubuntu Mono" :height 120)
+    ;;   ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 120)
+    ;;   ;; (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
+    ;;   ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120)
+    ;;   (doom-themes-org-config)
+    ;;   (doom-themes-visual-bell-config) ;Моргаем строкой состояния вместо сигнала
+    ;;   ;;(setq default-text-properties '(line-spacing 0.0 line-height 1.2))
+    ;;   ;;(set-face-attribute 'default nil :family "Monaspace Krypton" :height 120))
+    ;;   ;; (set-face-attribute 'default nil :family "SpaceMono Nerd Font" :height 120))
+    ;;   ;;(set-face-attribute 'default nil :family "monospace" :height 120))
+  ;; 	)
 
 ;; Add padding around the main editing area for a more spacious feel
 (use-package spacious-padding
   :ensure t
   :init (spacious-padding-mode 1))
-
-;; Enable line numbers in programming modes
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (setq display-line-numbers-width 4)
-            (display-line-numbers-mode 1)))
 
 ;; Add highlighting to current line in directories
 (add-hook 'dired-after-readin-hook 'hl-line-mode)
@@ -104,32 +128,115 @@
   :custom
   (indent-bars-width-frac 0.1))
 
-;; Treemacs file tree
-(use-package treemacs
-  :ensure t
-  :bind (("C-c C-t" . treemacs)))
-
-(use-package treemacs-evil
-  :after (treemacs evil)
-  :ensure t)
-
-(use-package treemacs-projectile
-  :after (treemacs projectile)
-  :ensure t)
-
-(defun my/treemacs-projectile-auto-open ()
-  "Открыть treemacs при переключении проекта в projectile."
-  (when (fboundp 'treemacs)
-    (treemacs)))
-
-(add-hook 'projectile-after-switch-project-hook #'my/treemacs-projectile-auto-open)
 
 (use-package nerd-icons
   :ensure t)
 
 (setq nerd-icons-font-family "Symbols Nerd Font Mono")
 
-(require 'nerd-icons)
+;; Dired settings
+(setq delete-by-moving-to-trash t)
+
+(use-package ultra-scroll
+    :ensure t
+    :vc (:url "https://github.com/jdtsmith/ultra-scroll" :rev :newest)
+    :init
+    (setq scroll-conservatively 101  ; important!
+          scroll-margin 0)
+    :config
+    (ultra-scroll-mode 1))
+
+;; Configure the core completion system with IVY
+(use-package ivy
+  :ensure t
+  :diminish
+  :config
+  (ivy-mode 1)
+  ;; Configure completion styles
+  (setq completion-styles '(basic substring partial-completion flex)
+        ivy-use-virtual-buffers t
+        ivy-height 15
+        ivy-count-format "(%d/%d) "))
+
+;; Install Counsel for enhanced commands
+(use-package counsel
+  :ensure t
+  :diminish
+  :config
+  ;; Enable counsel-mode to enhance built-in functions
+  (counsel-mode 1))
+
+;; Use vertical completion UI
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode))
+
+;; Add annotations to completion candidates
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode))
+
+(use-package smartparens
+  :ensure t
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-mode 1)
+  ;; Enable special pairing in programming modes
+  (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
+  ;; Specific mode hooks for clojure and emacs-lisp
+  (add-hook 'clojure-mode-hook 'smartparens-mode)
+  (add-hook 'emacs-lisp-mode-hook 'smartparens-mode))
+
+(use-package which-key
+  :ensure t
+  :init
+  (which-key-mode 1)
+  :config
+  (setq which-key-idle-delay 0.5
+        which-key-idle-secondary-delay 0.0))
+
+(use-package projectile
+  :ensure t
+  :bind (("C-c C-t" . treemacs)
+         ("C-c p" . projectile-command-map))
+  :init
+  (projectile-mode 1)
+  :config
+  (setq projectile-completion-system 'ivy
+        projectile-indexing-method 'alien
+        projectile-enable-caching t
+        projectile-sort-order 'recentf
+        projectile-use-git-grep t))
+
+;; Enable line numbers in programming modes
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (setq display-line-numbers-width 4)
+            (display-line-numbers-mode 1)))
+
+;; Treemacs file tree
+  (use-package treemacs
+    :ensure t
+    :bind (("C-c C-t" . treemacs)))
+
+  (use-package treemacs-evil
+    :after (treemacs evil)
+    :ensure t)
+
+  (use-package treemacs-projectile
+    :after (treemacs projectile)
+    :ensure t)
+
+  (defun my/treemacs-projectile-auto-open ()
+    "Открыть treemacs при переключении проекта в projectile."
+    (when (fboundp 'treemacs)
+      (treemacs)))
+
+  (add-hook 'projectile-after-switch-project-hook #'my/treemacs-projectile-auto-open)
+
+  (require 'nerd-icons)
 (require 'treemacs)
 
 (setq treemacs-follow-after-init t)
@@ -275,82 +382,6 @@
 ;;(treemacs-load-all-the-icons-with-workaround-font "JetBrainsMono Nerd Font Mono")
 
 ;;(treemacs-resize-icons 20)
-
-;; Dired settings
-(setq delete-by-moving-to-trash t)
-
-(use-package ultra-scroll
-  :ensure t
-  :vc (:url "https://github.com/jdtsmith/ultra-scroll" :rev :newest)
-  :init
-  (setq scroll-conservatively 101  ; important!
-        scroll-margin 0)
-  :config
-  (ultra-scroll-mode 1))
-
-;; Configure the core completion system with IVY
-(use-package ivy
-  :ensure t
-  :diminish
-  :config
-  (ivy-mode 1)
-  ;; Configure completion styles
-  (setq completion-styles '(basic substring partial-completion flex)
-        ivy-use-virtual-buffers t
-        ivy-height 15
-        ivy-count-format "(%d/%d) "))
-
-;; Install Counsel for enhanced commands
-(use-package counsel
-  :ensure t
-  :diminish
-  :config
-  ;; Enable counsel-mode to enhance built-in functions
-  (counsel-mode 1))
-
-;; Use vertical completion UI
-(use-package vertico
-  :ensure t
-  :init
-  (vertico-mode))
-
-;; Add annotations to completion candidates
-(use-package marginalia
-  :ensure t
-  :config
-  (marginalia-mode))
-
-(use-package smartparens
-  :ensure t
-  :config
-  (require 'smartparens-config)
-  (smartparens-global-mode 1)
-  ;; Enable special pairing in programming modes
-  (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
-  ;; Specific mode hooks for clojure and emacs-lisp
-  (add-hook 'clojure-mode-hook 'smartparens-mode)
-  (add-hook 'emacs-lisp-mode-hook 'smartparens-mode))
-
-(use-package which-key
-  :ensure t
-  :init
-  (which-key-mode 1)
-  :config
-  (setq which-key-idle-delay 0.5
-        which-key-idle-secondary-delay 0.0))
-
-(use-package projectile
-  :ensure t
-  :bind (("C-c C-t" . treemacs)
-         ("C-c p" . projectile-command-map))
-  :init
-  (projectile-mode 1)
-  :config
-  (setq projectile-completion-system 'ivy
-        projectile-indexing-method 'alien
-        projectile-enable-caching t
-        projectile-sort-order 'recentf
-        projectile-use-git-grep t))
 
 (use-package dape
   :ensure t
@@ -728,6 +759,8 @@
 
 (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
 
+(use-package toc-org
+:ensure t)
 
 (defun my-org-extract-and-show-json ()
   "Извлечь JSON из текущей ячейки таблицы и показать с форматированием"
@@ -781,6 +814,34 @@
 ;; Автоматический запуск при переходе по таблице
 (add-hook 'org-table-follow-field-hook 'my-org-auto-format-json-at-point)
 
+;; (use-package codeium
+;;   :vc (:url "https://github.com/Exafunction/codeium.el"
+;; 			:rev :newest
+;; 			:branch "main")
+;;   :after company
+;;   :init  (add-to-list 'completion-at-point-functions #'codeium-completion-at-point) 
+;;   ;;:custom
+;;   ;;(codeium-api-enabled (when (libxml-available-p) t))
+;;   ;;:bind (("C-TAB" . codeium-complete-inline)
+;;    ;;      ("M-\\" . codeium-complete))
+;;   )
+
+(use-package gptel
+  :ensure t
+  :config (gptel-make-privategpt "privateGPT"
+  			:protocol "http"
+  			:host "localhost:1234"
+  			:stream t
+  			:context t   ;Use context provided by embeddings
+  			:sources t   ;Return information about source documents
+  			:models '(qwen/qwen3-4b openai/gpt-oss-20b minimaxai.minimax-m2))
+  )
+
+(use-package gptel-agent
+  :vc ( :url "https://github.com/karthink/gptel-agent"
+        :rev :newest)
+  :config (gptel-agent-update))
+
 (use-package magit
   :ensure t
   :bind (("C-c g" . magit-status))
@@ -788,6 +849,22 @@
   (setq magit-stage-all-confirm nil
         magit-unstage-all-confirm nil
         magit-save-repository-buffers 'dont-ask))
+
+;;(use-package page-break-lines
+;;	:ensure t)
+
+(use-package dashboard
+  :ensure t
+  :init (setq dashboard-display-icons-p t
+			  dashboard-icon-type 'nerd-icons
+			  dashboard-set-heading-icons t
+			  dashboard-set-file-icons t
+			  dashboard-center-content t
+			  dashboard-startup-banner 'logo
+			  dashboard-vertically-center-content t
+			  dashboard-projects-backend 'projectile)
+  :config
+  (dashboard-setup-startup-hook))
 
 (use-package general
   :ensure t

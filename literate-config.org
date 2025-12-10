@@ -1,32 +1,67 @@
 #+TITLE: My Emacs Configuration
 #+AUTHOR: Denis Rumyantsev
 #+DATE: $(date +%Y-%m-%d)
-#+PROPERTY: header-args :tangle init.el
+#+PROPERTY: header-args :tangle ~/.emacs.d/init.el
 
 * Meta Information
   :PROPERTIES:
-  :header-args: :tangle init.el
+  :header-args: :tangle ~/.emacs.d/init.el
   :END:
   
   #+BEGIN_SRC emacs-lisp
-  ;;; init.el --- Literate Configuration
-  ;;; Commentary:
-  ;; Automatically generated from literate-config.org
-  ;;; Code:
+;; -*- lexical-binding: t -*-
+;; init.el - Literate Configuration
+;;; Commentary:
+;; Automatically generated from literate-config.org
+;;; Code:
   #+END_SRC
 
- 
-* Table of Contents :TOC_4:
+* Table of Contents :TOC_2:
+- [[#meta-information][Meta Information]]
+- [[#new-block][New block]]
 - [[#overview][Overview]]
 - [[#performance-optimizations][Performance Optimizations]]
 - [[#package-management][Package Management]]
 - [[#ui-customization][UI Customization]]
+  - [[#basic-ui-elements][Basic UI Elements]]
+  - [[#themes-and-fonts][Themes and Fonts]]
+  - [[#additional-ui-enhancements][Additional UI Enhancements]]
+  - [[#better-scrolling-experience][Better Scrolling Experience]]
 - [[#completion-system][Completion System]]
+  - [[#ivy-and-associated-packages][Ivy and Associated Packages]]
 - [[#editing-enhancements][Editing Enhancements]]
-- [[#language-support][Language Support]]
+  - [[#brackets-and-parentheses-management][Brackets and Parentheses Management]]
+  - [[#show-available-key-bindings][Show Available Key Bindings]]
+- [[#project-management][Project Management]]
+- [[#development][Development]]
+  - [[#enable-line-number-in-programming-modes][Enable line number in programming modes]]
+  - [[#treemacs][Treemacs]]
+  - [[#debugger-support][Debugger Support]]
+  - [[#company-completion][Company Completion]]
+  - [[#code-checking][Code Checking]]
+  - [[#netc-development][.NET/C# Development]]
+  - [[#yaml][Yaml]]
+  - [[#docker][Docker]]
+  - [[#httprest-client][HTTP/REST Client]]
+  - [[#universal-lsp-client][Universal LSP Client]]
+  - [[#clojure-development][Clojure Development]]
+  - [[#rust-development][Rust Development]]
+  - [[#go-development][Go Development]]
+  - [[#common-lisp-support][Common lisp support]]
+  - [[#databasesql-support][Database/SQL Support]]
+  - [[#python-development][Python Development]]
+- [[#org-mode-enhancements][Org Mode Enhancements]]
+- [[#ai][AI]]
 - [[#version-control][Version Control]]
+- [[#dashboard][Dashboard]]
 - [[#key-bindings][Key Bindings]]
+  - [[#leader-key-definition][Leader Key Definition]]
+- [[#my-additional-functions][My additional functions]]
+  - [[#uuid-generation][UUID generation]]
+  - [[#text-transformation][Text transformation]]
 - [[#final-settings][Final Settings]]
+
+* New block
 
 * Overview
 This is my Emacs configuration using the literary programming approach. Each section builds upon the previous ones, documenting not just what each configuration does, but why I chose it. The configuration prioritizes performance, usability, and language-specific features for my development workflow.
@@ -54,29 +89,31 @@ Before loading any packages, let's optimize Emacs for better performance. These 
 Next, we'll set up package management using the built-in =package= system with MELPA as the primary source.
 
 #+begin_src elisp
-;; Import and initialize package manager
-(require 'package)
+  ;; Import and initialize package manager
+  (require 'package)
 
-;; Add major package repositories
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("gnu" . "https://elpa.gnu.org/packages/") t)
+  ;; Add major package repositories
+  (add-to-list 'package-archives
+               '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-archives
+               '("gnu" . "https://elpa.gnu.org/packages/") t)
 
-;; Initialize packages
-(package-initialize)
+  ;; Initialize packages
+  (package-initialize)
 
-;; Refresh package contents on first start
-(unless package-archive-contents
-  (package-refresh-contents))
+  ;; Refresh package contents on first start
+  (unless package-archive-contents
+    (package-refresh-contents))
 
-;; Install use-package if not already present
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+  ;; Install use-package if not already present
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
 
-;; Configure use-package to handle automatic installation
-(eval-and-compile
-  (setq use-package-always-ensure t))
+  ;; Configure use-package to handle automatic installation
+  (eval-and-compile
+    (setq use-package-always-ensure t))
+
+  (require 'use-package)
 #+end_src
 
 
@@ -113,13 +150,40 @@ First, let's remove visual clutter and set up clean defaults:
 Choose a theme and set up the font to create an aesthetically pleasing interface:
 
 #+begin_src elisp
-(use-package ef-themes
-  :ensure t
-  :config
-  ;; Apply the theme with a light background
-  (load-theme 'ef-cyprus t)
-  ;; Set the default font family and size
-  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120))
+  (use-package ef-themes
+        :ensure t
+          :config
+          ;; Apply the theme with a light background
+          (load-theme 'ef-cyprus t)
+          ;; Set the default font family and size
+          (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110))
+
+      ;; (use-package 
+      ;;   doom-themes
+      ;;   :ensure t
+      ;;   :config
+      ;;   ;; Global settings (defaults)
+      ;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+      ;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
+      ;;   ;;(load-theme 'doom-flatwhite t)
+      ;;   (load-theme 'doom-one-light)
+      ;;   ;;(load-theme 'doom-one t)
+      ;;   ;;(load-theme 'doom-nord t)
+      ;;   ;;(load-theme 'doom-tomorrow-day t)
+      ;;   ;;(load-theme 'doom-opera-light t)
+      ;;   ;;(load-theme 'doom-nord-light t)
+      ;;   ;;(set-face-attribute 'default nil :family "Iosevka Nerd Font" :height 130)
+      ;;   ;; (set-face-attribute 'default nil :family "Ubuntu Mono" :height 120)
+      ;;   ;; (set-face-attribute 'default nil :family "Berkeley Mono" :height 120)
+      ;;   ;; (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 110)
+      ;;   ;;(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font Mono" :height 120)
+      ;;   (doom-themes-org-config)
+      ;;   (doom-themes-visual-bell-config) ;Моргаем строкой состояния вместо сигнала
+      ;;   ;;(setq default-text-properties '(line-spacing 0.0 line-height 1.2))
+      ;;   ;;(set-face-attribute 'default nil :family "Monaspace Krypton" :height 120))
+      ;;   ;; (set-face-attribute 'default nil :family "SpaceMono Nerd Font" :height 120))
+      ;;   ;;(set-face-attribute 'default nil :family "monospace" :height 120))
+    ;; 	)          
 #+end_src
 
 ** Additional UI Enhancements
@@ -130,12 +194,6 @@ Add visual enhancements for better user experience:
 (use-package spacious-padding
   :ensure t
   :init (spacious-padding-mode 1))
-
-;; Enable line numbers in programming modes
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (setq display-line-numbers-width 4)
-            (display-line-numbers-mode 1)))
 
 ;; Add highlighting to current line in directories
 (add-hook 'dired-after-readin-hook 'hl-line-mode)
@@ -160,177 +218,11 @@ Add visual enhancements for better user experience:
   :custom
   (indent-bars-width-frac 0.1))
 
-;; Treemacs file tree
-(use-package treemacs
-  :ensure t
-  :bind (("C-c C-t" . treemacs)))
-
-(use-package treemacs-evil
-  :after (treemacs evil)
-  :ensure t)
-
-(use-package treemacs-projectile
-  :after (treemacs projectile)
-  :ensure t)
-
-(defun my/treemacs-projectile-auto-open ()
-  "Открыть treemacs при переключении проекта в projectile."
-  (when (fboundp 'treemacs)
-    (treemacs)))
-
-(add-hook 'projectile-after-switch-project-hook #'my/treemacs-projectile-auto-open)
 
 (use-package nerd-icons
   :ensure t)
 
 (setq nerd-icons-font-family "Symbols Nerd Font Mono")
-
-(require 'nerd-icons)
-(require 'treemacs)
-
-(setq treemacs-follow-after-init t)
-(setq treemacs-follow-mode -1)
-
-(defface treemacs-nerd-icons-root-face
-  '((t (:inherit nerd-icons-dorange)))
-  "Face used for the root icon in nerd-icons theme."
-  :group 'treemacs-faces)
-
-(defface treemacs-nerd-icons-file-face
-  '((t (:inherit nerd-icons-orange)))
-  "Face used for the directory and file icons in nerd-icons theme."
-  :group 'treemacs-faces)
-
-(defvar treemacs-nerd-icons-tab (propertize "\t" :face 'treemacs-nerd-icons-file-face))
-
-;;(defvar treemacs-nerd-icons-space (propertize " " :font-family))
-
-(treemacs-create-theme "nerd-icons"
-                       :config
-                       (progn
-                         (dolist (item nerd-icons-extension-icon-alist)
-                           (let* ((extension (car item))
-                                  (func (cadr item))
-                                  (args (append (list (cadr (cdr item))) '(:v-adjust -0.05 :height 1.0) (cdr (cddr item))))
-                                  (icon (apply func args)))
-                             (let* ((icon-pair (cons (format "%s%s" icon treemacs-nerd-icons-tab) (format "%s%s" icon treemacs-nerd-icons-tab)))
-                                    (gui-icons (treemacs-theme->gui-icons treemacs--current-theme))
-                                    (tui-icons (treemacs-theme->tui-icons treemacs--current-theme))
-                                    (gui-icon  (car icon-pair))
-                                    (tui-icon  (cdr icon-pair)))
-                               (ht-set! gui-icons extension gui-icon)
-                               (ht-set! tui-icons extension tui-icon))))
-
-                         ;; directory and other icons
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-repo"   :face 'treemacs-nerd-icons-root-face) treemacs-nerd-icons-tab)
-                                               :extensions (root-closed root-open)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder_open"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (dir-open)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (dir-closed)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder_open"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (src-open)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (src-closed)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder_open"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (build-open)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (build-closed)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder_open"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (test-open)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (test-closed)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-package"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (tag-open)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-package"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (tag-closed)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-tag"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (tag-leaf)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-flame"  :face 'nerd-icons-red) treemacs-nerd-icons-tab)
-                                               :extensions (error)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-stop"  :face 'nerd-icons-yellow) treemacs-nerd-icons-tab)
-                                               :extensions (warning)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-info"   :face 'nerd-icons-blue) treemacs-nerd-icons-tab)
-                                               :extensions (info)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-mail"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (mail)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-bookmark"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (bookmark)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-monitor"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (screen)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-home"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (house)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-list"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (list)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-repeat"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (repeat)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-suitcase"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (suitcase)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-close"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (close)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-calendar"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (calendar)
-                                               :fallback 'same-as-icon)
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-briefcase"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (briefcase)
-                                               :fallback 'same-as-icon)
-
-                         (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-file_o" :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
-                                               :extensions (fallback)
-                                               :fallback 'same-as-icon)))
-
-
-(treemacs-load-theme "nerd-icons")
-
-;;(treemacs-load-all-the-icons-with-workaround-font "Hermit")
-;;(setq treemacs-indentation '(20 px))
-
-(use-package treemacs-icons-dired
-  :hook (dired-mode . treemacs-icons-dired-enable-once)
-  :ensure t)
-
-;; (set-face-attribute 'treemacs-file-face nil :foreground "#555555")
-;; (set-face-attribute 'treemacs-file-face nil :height 100)
-;; (set-face-attribute 'treemacs-directory-face nil :height 100)
-;; (set-face-attribute 'treemacs-directory-collapsed-face nil :height 100)
-;; (set-face-attribute 'treemacs-file-face nil :family "Berkeley Mono")
-
-;; (set-face-attribute 'treemacs-file-face nil :height 100)
-;; (set-face-attribute 'treemacs-directory-face nil :height 100)
-;; (set-face-attribute 'treemacs-git-modified-face nil :height 100)
-;;(set-face-attribute 'treemacs-all-the-icons-root-face nil :height 120)
-;;(set-face-attribute 'treemacs-all-the-icons-file-face nil :height 120)
-;;(set-face-attribute 'treemacs-all-the-icons-file-face nil :height 50)
-
-(set-face-attribute 'treemacs-nerd-icons-file-face nil :height 120)
-;;(set-face-attribute 'treemacs-nerd-icons-root-face nil :height 150)
-
-;;(treemacs-load-all-the-icons-with-workaround-font "JetBrainsMono Nerd Font Mono")
-
-;;(treemacs-resize-icons 20)
 
 ;; Dired settings
 (setq delete-by-moving-to-trash t)
@@ -340,15 +232,16 @@ Add visual enhancements for better user experience:
 Enhance the scrolling experience with ultra-scroll:
 
 #+begin_src elisp
-(use-package ultra-scroll
-  :ensure t
-  :vc (:url "https://github.com/jdtsmith/ultra-scroll" :rev :newest)
-  :init
-  (setq scroll-conservatively 101  ; important!
-        scroll-margin 0)
-  :config
-  (ultra-scroll-mode 1))
+  (use-package ultra-scroll
+      :ensure t
+      :vc (:url "https://github.com/jdtsmith/ultra-scroll" :rev :newest)
+      :init
+      (setq scroll-conservatively 101  ; important!
+            scroll-margin 0)
+      :config
+      (ultra-scroll-mode 1))
 #+end_src
+
 
 * Completion System
 Set up a powerful completion system for navigating files and buffers efficiently.
@@ -443,8 +336,190 @@ Set up projectile for project-wide operations:
 #+end_src
 
 
-* Language Support
+* Development
 Configure language-specific features and LSP support for development.
+
+** Enable line number in programming modes
+
+#+begin_src elisp
+;; Enable line numbers in programming modes
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (setq display-line-numbers-width 4)
+            (display-line-numbers-mode 1)))
+#+end_src
+
+** Treemacs
+
+#+begin_src elisp
+    ;; Treemacs file tree
+    (use-package treemacs
+      :ensure t
+      :bind (("C-c C-t" . treemacs)))
+
+    (use-package treemacs-evil
+      :after (treemacs evil)
+      :ensure t)
+
+    (use-package treemacs-projectile
+      :after (treemacs projectile)
+      :ensure t)
+
+    (defun my/treemacs-projectile-auto-open ()
+      "Открыть treemacs при переключении проекта в projectile."
+      (when (fboundp 'treemacs)
+        (treemacs)))
+
+    (add-hook 'projectile-after-switch-project-hook #'my/treemacs-projectile-auto-open)
+
+    (require 'nerd-icons)
+  (require 'treemacs)
+
+  (setq treemacs-follow-after-init t)
+  (setq treemacs-follow-mode -1)
+
+  (defface treemacs-nerd-icons-root-face
+    '((t (:inherit nerd-icons-dorange)))
+    "Face used for the root icon in nerd-icons theme."
+    :group 'treemacs-faces)
+
+  (defface treemacs-nerd-icons-file-face
+    '((t (:inherit nerd-icons-orange)))
+    "Face used for the directory and file icons in nerd-icons theme."
+    :group 'treemacs-faces)
+
+  (defvar treemacs-nerd-icons-tab (propertize "\t" :face 'treemacs-nerd-icons-file-face))
+
+  ;;(defvar treemacs-nerd-icons-space (propertize " " :font-family))
+
+  (treemacs-create-theme "nerd-icons"
+                         :config
+                         (progn
+                           (dolist (item nerd-icons-extension-icon-alist)
+                             (let* ((extension (car item))
+                                    (func (cadr item))
+                                    (args (append (list (cadr (cdr item))) '(:v-adjust -0.05 :height 1.0) (cdr (cddr item))))
+                                    (icon (apply func args)))
+                               (let* ((icon-pair (cons (format "%s%s" icon treemacs-nerd-icons-tab) (format "%s%s" icon treemacs-nerd-icons-tab)))
+                                      (gui-icons (treemacs-theme->gui-icons treemacs--current-theme))
+                                      (tui-icons (treemacs-theme->tui-icons treemacs--current-theme))
+                                      (gui-icon  (car icon-pair))
+                                      (tui-icon  (cdr icon-pair)))
+                                 (ht-set! gui-icons extension gui-icon)
+                                 (ht-set! tui-icons extension tui-icon))))
+
+                           ;; directory and other icons
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-repo"   :face 'treemacs-nerd-icons-root-face) treemacs-nerd-icons-tab)
+                                                 :extensions (root-closed root-open)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder_open"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (dir-open)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (dir-closed)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder_open"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (src-open)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (src-closed)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder_open"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (build-open)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (build-closed)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder_open"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (test-open)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-folder"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (test-closed)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-package"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (tag-open)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-package"  :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (tag-closed)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-tag"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (tag-leaf)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-flame"  :face 'nerd-icons-red) treemacs-nerd-icons-tab)
+                                                 :extensions (error)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-stop"  :face 'nerd-icons-yellow) treemacs-nerd-icons-tab)
+                                                 :extensions (warning)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-info"   :face 'nerd-icons-blue) treemacs-nerd-icons-tab)
+                                                 :extensions (info)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-mail"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (mail)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-bookmark"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (bookmark)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-monitor"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (screen)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-home"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (house)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-list"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (list)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-repeat"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (repeat)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-suitcase"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (suitcase)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-mdicon "nf-md-close"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (close)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-octicon "nf-oct-calendar"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (calendar)
+                                                 :fallback 'same-as-icon)
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-briefcase"   :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (briefcase)
+                                                 :fallback 'same-as-icon)
+
+                           (treemacs-create-icon :icon (format "%s%s" (nerd-icons-faicon "nf-fa-file_o" :face 'treemacs-nerd-icons-file-face) treemacs-nerd-icons-tab)
+                                                 :extensions (fallback)
+                                                 :fallback 'same-as-icon)))
+
+
+  (treemacs-load-theme "nerd-icons")
+
+  ;;(treemacs-load-all-the-icons-with-workaround-font "Hermit")
+  ;;(setq treemacs-indentation '(20 px))
+
+  (use-package treemacs-icons-dired
+    :hook (dired-mode . treemacs-icons-dired-enable-once)
+    :ensure t)
+
+  ;; (set-face-attribute 'treemacs-file-face nil :foreground "#555555")
+  ;; (set-face-attribute 'treemacs-file-face nil :height 100)
+  ;; (set-face-attribute 'treemacs-directory-face nil :height 100)
+  ;; (set-face-attribute 'treemacs-directory-collapsed-face nil :height 100)
+  ;; (set-face-attribute 'treemacs-file-face nil :family "Berkeley Mono")
+
+  ;; (set-face-attribute 'treemacs-file-face nil :height 100)
+  ;; (set-face-attribute 'treemacs-directory-face nil :height 100)
+  ;; (set-face-attribute 'treemacs-git-modified-face nil :height 100)
+  ;;(set-face-attribute 'treemacs-all-the-icons-root-face nil :height 120)
+  ;;(set-face-attribute 'treemacs-all-the-icons-file-face nil :height 120)
+  ;;(set-face-attribute 'treemacs-all-the-icons-file-face nil :height 50)
+
+  (set-face-attribute 'treemacs-nerd-icons-file-face nil :height 120)
+  ;;(set-face-attribute 'treemacs-nerd-icons-root-face nil :height 150)
+
+  ;;(treemacs-load-all-the-icons-with-workaround-font "JetBrainsMono Nerd Font Mono")
+
+  ;;(treemacs-resize-icons 20)
+
+#+end_src
 
 ** Debugger Support
 Set up debugging support with Dape:
@@ -877,7 +952,7 @@ Basic Python setup:
   :interpreter "python")
 #+end_src
 
-** Org Mode Enhancements
+* Org Mode Enhancements
 Configure Org mode with PlantUML support:
 
 #+begin_src elisp
@@ -887,66 +962,114 @@ Configure Org mode with PlantUML support:
 (setq org-plantuml-jar-path (expand-file-name "/home/denis/Projects/arch/plantuml-mit-1.2025.2.jar"))
 (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
 (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t) (emacs-lisp . t) (sql .t)))
+#+end_src
 
+Use org-modern to display the org file beautifully.
+
+#+begin_src elisp
 (use-package org-modern
   :ensure t
   :hook
   (org-mode . org-modern-mode))
 
 (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+#+end_src
 
+Recreate table of contents on save org file which contains =:TOC_3:= like tag
 
-(defun my-org-extract-and-show-json ()
-  "Извлечь JSON из текущей ячейки таблицы и показать с форматированием"
-  (interactive)
-  (when (org-at-table-p)
-    (let* ((element (org-element-at-point))
-           (table (org-element-lineage element '(table) t))
-           (value (org-table-get (org-table-current-line)
-                                (org-table-current-column))))
-      (if (and value (string-match-p "[{\\[]" value)) ; Проверка на JSON
-          (my-show-formatted-json value)
-        (message "Current cell doesn't contain JSON data")))))
+#+begin_src elisp
+  (use-package toc-org
+  :ensure t)
+#+end_src
 
-(defun my-show-formatted-json (json-string)
-  "Показать отформатированный JSON в отдельном буфере"
-  (let ((json-buffer (get-buffer-create "*Formatted JSON*")))
-    (with-current-buffer json-buffer
-      (erase-buffer)
-      (insert (my-beautify-json json-string))
-      (when (fboundp 'json-mode)
-        (json-mode))
-      (goto-char (point-min)))
-    (display-buffer json-buffer '(display-buffer-pop-up-window . nil))))
+Add formatting for json values in table. Useful in sql results.
 
-(defun my-beautify-json (json-str)
-  "Украсить JSON строку"
-  (condition-case err
-      (let* ((json-object (json-read-from-string json-str))
-             (temp-buffer (generate-new-buffer " *json-temp*")))
-        (with-current-buffer temp-buffer
-          (insert (json-encode json-object))
-          (json-pretty-print-buffer)
-          (let ((result (buffer-string)))
-            (kill-buffer temp-buffer)
-            result)))
-    (error
-     (kill-buffer temp-buffer)
-     (format "Error parsing JSON: %s\nOriginal: %s"
-             (error-message-string err) json-str))))
+  #+begin_src elisp
+  (defun my-org-extract-and-show-json ()
+    "Извлечь JSON из текущей ячейки таблицы и показать с форматированием"
+    (interactive)
+    (when (org-at-table-p)
+      (let* ((element (org-element-at-point))
+             (table (org-element-lineage element '(table) t))
+             (value (org-table-get (org-table-current-line)
+                                  (org-table-current-column))))
+        (if (and value (string-match-p "[{\\[]" value)) ; Проверка на JSON
+            (my-show-formatted-json value)
+          (message "Current cell doesn't contain JSON data")))))
 
-(defun my-org-auto-format-json-at-point ()
-  "Автоматически форматировать JSON при наведении курсора"
-  (interactive)
-  (when (org-at-table-p)
-    (let ((cell-content (org-table-get-field)))
-      (when (and cell-content
-                 (or (string-prefix-p "{" cell-content)
-                     (string-prefix-p "[" cell-content)))
-        (my-show-formatted-json cell-content)))))
+  (defun my-show-formatted-json (json-string)
+    "Показать отформатированный JSON в отдельном буфере"
+    (let ((json-buffer (get-buffer-create "*Formatted JSON*")))
+      (with-current-buffer json-buffer
+        (erase-buffer)
+        (insert (my-beautify-json json-string))
+        (when (fboundp 'json-mode)
+          (json-mode))
+        (goto-char (point-min)))
+      (display-buffer json-buffer '(display-buffer-pop-up-window . nil))))
 
-;; Автоматический запуск при переходе по таблице
-(add-hook 'org-table-follow-field-hook 'my-org-auto-format-json-at-point)
+  (defun my-beautify-json (json-str)
+    "Украсить JSON строку"
+    (condition-case err
+        (let* ((json-object (json-read-from-string json-str))
+               (temp-buffer (generate-new-buffer " *json-temp*")))
+          (with-current-buffer temp-buffer
+            (insert (json-encode json-object))
+            (json-pretty-print-buffer)
+            (let ((result (buffer-string)))
+              (kill-buffer temp-buffer)
+              result)))
+      (error
+       (kill-buffer temp-buffer)
+       (format "Error parsing JSON: %s\nOriginal: %s"
+               (error-message-string err) json-str))))
+
+  (defun my-org-auto-format-json-at-point ()
+    "Автоматически форматировать JSON при наведении курсора"
+    (interactive)
+    (when (org-at-table-p)
+      (let ((cell-content (org-table-get-field)))
+        (when (and cell-content
+                   (or (string-prefix-p "{" cell-content)
+                       (string-prefix-p "[" cell-content)))
+          (my-show-formatted-json cell-content)))))
+
+  ;; Автоматический запуск при переходе по таблице
+  (add-hook 'org-table-follow-field-hook 'my-org-auto-format-json-at-point)
+#+end_src
+
+* AI
+Use LLM
+
+#+begin_src elisp
+  ;; (use-package codeium
+  ;;   :vc (:url "https://github.com/Exafunction/codeium.el"
+  ;; 			:rev :newest
+  ;; 			:branch "main")
+  ;;   :after company
+  ;;   :init  (add-to-list 'completion-at-point-functions #'codeium-completion-at-point) 
+  ;;   ;;:custom
+  ;;   ;;(codeium-api-enabled (when (libxml-available-p) t))
+  ;;   ;;:bind (("C-TAB" . codeium-complete-inline)
+  ;;    ;;      ("M-\\" . codeium-complete))
+  ;;   )
+
+  (use-package gptel
+    :ensure t
+    :config (gptel-make-privategpt "privateGPT"
+    			:protocol "http"
+    			:host "localhost:1234"
+    			:stream t
+    			:context t   ;Use context provided by embeddings
+    			:sources t   ;Return information about source documents
+    			:models '(qwen/qwen3-4b openai/gpt-oss-20b minimaxai.minimax-m2))
+    )
+
+  (use-package gptel-agent
+    :vc ( :url "https://github.com/karthink/gptel-agent"
+          :rev :newest)
+    :config (gptel-agent-update))
+
 #+end_src
 
 
@@ -961,6 +1084,26 @@ Configure Magit for Git workflows:
   (setq magit-stage-all-confirm nil
         magit-unstage-all-confirm nil
         magit-save-repository-buffers 'dont-ask))
+#+end_src
+
+* Dashboard
+
+#+begin_src elisp
+  ;;(use-package page-break-lines
+  ;;	:ensure t)
+
+  (use-package dashboard
+    :ensure t
+    :init (setq dashboard-display-icons-p t
+  			  dashboard-icon-type 'nerd-icons
+  			  dashboard-set-heading-icons t
+  			  dashboard-set-file-icons t
+  			  dashboard-center-content t
+  			  dashboard-startup-banner 'logo
+  			  dashboard-vertically-center-content t
+  			  dashboard-projects-backend 'projectile)
+    :config
+    (dashboard-setup-startup-hook))
 #+end_src
 
 
