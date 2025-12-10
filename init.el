@@ -197,19 +197,6 @@
   (setq which-key-idle-delay 0.5
         which-key-idle-secondary-delay 0.0))
 
-(use-package projectile
-  :ensure t
-  :bind (("C-c C-t" . treemacs)
-         ("C-c p" . projectile-command-map))
-  :init
-  (projectile-mode 1)
-  :config
-  (setq projectile-completion-system 'ivy
-        projectile-indexing-method 'alien
-        projectile-enable-caching t
-        projectile-sort-order 'recentf
-        projectile-use-git-grep t))
-
 ;; Enable line numbers in programming modes
 (add-hook 'prog-mode-hook
           (lambda ()
@@ -217,26 +204,11 @@
             (display-line-numbers-mode 1)))
 
 ;; Treemacs file tree
-  (use-package treemacs
-    :ensure t
-    :bind (("C-c C-t" . treemacs)))
+(use-package treemacs
+  :ensure t
+  :bind (("C-c C-t" . treemacs)))
 
-  (use-package treemacs-evil
-    :after (treemacs evil)
-    :ensure t)
-
-  (use-package treemacs-projectile
-    :after (treemacs projectile)
-    :ensure t)
-
-  (defun my/treemacs-projectile-auto-open ()
-    "Открыть treemacs при переключении проекта в projectile."
-    (when (fboundp 'treemacs)
-      (treemacs)))
-
-  (add-hook 'projectile-after-switch-project-hook #'my/treemacs-projectile-auto-open)
-
-  (require 'nerd-icons)
+(require 'nerd-icons)
 (require 'treemacs)
 
 (setq treemacs-follow-after-init t)
@@ -418,10 +390,6 @@
 
   ;; Kill compile buffer on build success
   (add-hook 'dape-compile-hook 'kill-buffer)
-
-  ;; Projectile users
-  (setq dape-cwd-fn 'projectile-project-root)
-  ;;(setq dape-cwd-fn 'sharper--nearest-project-dir)
 
   (add-to-list 'dape-configs `(netcoredbg
      modes (csharp-mode csharp-ts-mode)
@@ -862,7 +830,7 @@
 			  dashboard-center-content t
 			  dashboard-startup-banner 'logo
 			  dashboard-vertically-center-content t
-			  dashboard-projects-backend 'projectile)
+			  dashboard-projects-backend 'project-el)
   :config
   (dashboard-setup-startup-hook))
 
