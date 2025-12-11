@@ -782,28 +782,17 @@
 ;; Автоматический запуск при переходе по таблице
 (add-hook 'org-table-follow-field-hook 'my-org-auto-format-json-at-point)
 
-;; (use-package codeium
-;;   :vc (:url "https://github.com/Exafunction/codeium.el"
-;; 			:rev :newest
-;; 			:branch "main")
-;;   :after company
-;;   :init  (add-to-list 'completion-at-point-functions #'codeium-completion-at-point) 
-;;   ;;:custom
-;;   ;;(codeium-api-enabled (when (libxml-available-p) t))
-;;   ;;:bind (("C-TAB" . codeium-complete-inline)
-;;    ;;      ("M-\\" . codeium-complete))
-;;   )
-
 (use-package gptel
   :ensure t
-  :config (gptel-make-privategpt "privateGPT"
+  :config
+  (gptel-make-openai "LMStudio"
   			:protocol "http"
   			:host "localhost:1234"
+  			:key "test"
   			:stream t
-  			:context t   ;Use context provided by embeddings
-  			:sources t   ;Return information about source documents
   			:models '(qwen/qwen3-4b openai/gpt-oss-20b minimaxai.minimax-m2))
-  )
+  (setq gptel-default-provider "LMStudio")
+  (setq gptel-model "openai/gpt-oss-20b"))
 
 (use-package gptel-agent
   :vc ( :url "https://github.com/karthink/gptel-agent"
@@ -832,7 +821,12 @@
 			  dashboard-vertically-center-content t
 			  dashboard-projects-backend 'project-el)
   :config
-  (dashboard-setup-startup-hook))
+  (dashboard-setup-startup-hook)
+  (setq dashboard-items '((recents   . 5)
+						  (bookmarks . 5)
+						  (projects  . 5)
+						  (agenda    . 5)
+						  (registers . 5))))
 
 (use-package general
   :ensure t
